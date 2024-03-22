@@ -1,23 +1,23 @@
-import type { IShoe } from '$lib/api/useShoes';
-import type { LoadEvent } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-export async function load({ fetch }: LoadEvent) {
-	const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-	const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+export const load: PageServerLoad = async ({ locals }) => {
+	const { supabase, getSession } = locals;
 
-	const response = await fetch(`${supabaseUrl}/rest/v1/shoes?select=*&order=date_added.desc`, {
-		headers: {
-			apikey: supabaseAnonKey,
-			Authorization: `Bearer ${supabaseAnonKey}`,
-			Range: '0-19'
-		}
-	});
+	const session = await getSession();
 
-	const data: IShoe = await response.json();
+	const { data: shoes, error } = await supabase
+		.from('shoes')
+		.select('*')
+		.order('date_added', { ascending: false })
+		.range(0, 9);
+
+	if (error) {
+		return { props: { shoes: [] } };
+	}
 
 	return {
 		props: {
-			shoes: data
+			shoes
 		}
 	};
-}
+};
