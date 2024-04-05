@@ -15,11 +15,13 @@
           type: 'signup',
           email,
           options: {
-            emailRedirectTo: 'https://example.com/welcome' // Redirect after successful verification
+            emailRedirectTo: 'localhost:5173' // Redirect after successful verification
           }
         });
   
-        if (error) throw error;
+        if (error) {
+          console.log(error)
+        };
   
         // Handle success logic
       } catch (err) {

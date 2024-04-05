@@ -1,6 +1,9 @@
 <script lang="ts">
-export let className: string = ""
-export let name: string
+	import { cn } from "$lib/utils";
+    import "iconify-icon"
+
+    export let className: string | undefined = "";
+    export let icon: string
 </script>
 
-<img src={`/icons/${name}.svg`}  alt={name} class={`h-6 w-6 ${className}`}/>
+<iconify-icon class={cn("text-2xl", className)} icon={icon}></iconify-icon>

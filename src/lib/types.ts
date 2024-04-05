@@ -9,6 +9,22 @@ export interface IShoe {
 	date_added?: number;
 }
 
+export interface IGroupMember {
+	id: string;
+	role: 'admin' | 'editor' | 'viewer';
+	user_id: string;
+	group_id: string;
+	users: {
+		name: string;
+		id: string;
+	};
+}
+
+export interface IGroup {
+	id: string;
+	name: string;
+}
+
 export interface IDataProps<T> {
 	data: {
 		props: T;

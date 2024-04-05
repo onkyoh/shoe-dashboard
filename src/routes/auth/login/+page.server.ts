@@ -2,17 +2,17 @@ import type { PageServerLoad, Actions } from './$types.js';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate, message } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { formSchema } from './schema';
+import { loginSchema } from './schema';
 
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(formSchema))
+		form: await superValidate(zod(loginSchema))
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event, zod(formSchema));
+		const form = await superValidate(event, zod(loginSchema));
 		if (!form.valid) {
 			return fail(400, {
 				form

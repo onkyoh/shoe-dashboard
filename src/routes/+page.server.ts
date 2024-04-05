@@ -1,9 +1,8 @@
 import type { PageServerLoad } from './$types';
+import type { IShoe } from '$lib/types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const { supabase, getSession } = locals;
-
-	const session = await getSession();
+	const { supabase, safeGetSession } = locals;
 
 	const { data: shoes, error } = await supabase
 		.from('shoes')
@@ -12,12 +11,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 		.range(0, 9);
 
 	if (error) {
-		return { props: { shoes: [] } };
+		return { shoes: [] };
 	}
 
 	return {
-		props: {
-			shoes
-		}
+		shoes: shoes as IShoe[]
 	};
 };
