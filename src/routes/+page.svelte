@@ -11,7 +11,7 @@
   </script>
    
 
-  <section class="flex flex-col gap-2">
+  <section class="flex flex-col gap-2 max-h-screen">
 
     <Card.Root>
     <Card.Header>

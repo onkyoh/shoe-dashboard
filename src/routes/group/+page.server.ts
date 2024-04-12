@@ -80,9 +80,9 @@ export const actions: Actions = {
 			});
 		}
 
-		const { supabase, getSession } = event.locals;
+		const { supabase, safeGetSession } = event.locals;
 
-		const session = await getSession();
+		const { session } = await safeGetSession();
 
 		if (!session) {
 			return fail(401, { form, message: 'Must be logged in' });

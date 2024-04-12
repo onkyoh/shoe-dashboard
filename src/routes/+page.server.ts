@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const { data: shoes, error } = await supabase
 		.from('shoes')
 		.select('*')
-		.order('date_added', { ascending: false })
+		.order('created_at', { ascending: false })
 		.range(0, 9);
 
 	if (error) {

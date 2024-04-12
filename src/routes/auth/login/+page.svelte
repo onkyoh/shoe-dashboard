@@ -43,7 +43,7 @@
 <Card.Root class="w-full max-w-[600px]">
   <form method="POST" use:enhance>
   <Card.Header class="space-y-1">
-    <Card.Title class="text-2xl">Login to account</Card.Title>
+    <Card.Title class="text-2xl">Welcome Back!</Card.Title>
   </Card.Header>
   <Card.Content class="grid gap-4">
     <div class="grid">
@@ -75,8 +75,9 @@
       </Form.Field>
       {/each}
   </Card.Content>
-  <Card.Footer>
-    <Button class="w-full" type="submit">{#if $submitting}<Spinner className="text-white mr-2"/>{/if}Login</Button>
+  <Card.Footer class="grid gap-2">
+    <Button class="w-full" type="submit">{#if $submitting}<Spinner className="text-white mr-2"/>{/if}Log In</Button>
+   <a href="/auth/reset-password" class="text-center text-sm text-blue-500">Forgot Password?</a>
   </Card.Footer>
 </form>
 </Card.Root>
