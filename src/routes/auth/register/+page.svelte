@@ -43,7 +43,6 @@
       <form method="POST" use:enhance>
       <Card.Header class="space-y-1">
         <Card.Title class="text-2xl">Create an account</Card.Title>
-        <Card.Description>Enter your email below to create your account</Card.Description>
       </Card.Header>
       <Card.Content class="grid gap-4">
         <div class="grid">
@@ -75,8 +74,9 @@
           </Form.Field>
           {/each}
       </Card.Content>
-      <Card.Footer>
-        <Button class="w-full" type="submit">{#if $submitting}<Spinner className="text-white mr-2"/>{/if}Create account</Button>
+      <Card.Footer class="grid gap-2">
+        <Button class="w-full" type="submit">{#if $submitting}<Spinner className="text-white mr-2"/>{/if}Register</Button>
+        <p class="text-center text-sm">Already have an account? <a href="/auth/login" class="text-blue-500">Log in</a></p>
       </Card.Footer>
     </form>
     </Card.Root>

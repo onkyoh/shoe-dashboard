@@ -1,26 +1,40 @@
 <script lang="ts">
     import type { PageData } from "./$types";
+
     import { cn } from '$lib/utils';
+    import { press } from 'svelte-gestures';
 
     import Button from "$lib/components/ui/button/button.svelte";
+    import { Label } from "$lib/components/ui/label";
     import { Input } from "$lib/components/ui/input";
+    import { Switch } from "$lib/components/ui/switch";
     import ShoeCard from "./(components)/ShoeCard.svelte";
-    import { press } from 'svelte-gestures';
+    import Icon from "$lib/components/ui/icon/Icon.svelte";
+
+    import Filter from "./(components)/Filter.svelte";
     
     import { goto } from "$app/navigation";
 	import type { IShoe } from "$lib/types";
-    import { page } from "$app/stores";
+	import Sort from "./(components)/Sort.svelte";
+
   
     export let data: PageData;
 
-
     $: desiredPage = data.page
+    $: maxPage = Math.ceil((data.count || 0) / 20);
 
     $: disablePrev = data.page <= 0; 
-    $: disableNext = data.page >= data.maxPage -1;
+    $: disableNext = data.page >= maxPage -1;
 
     const navToPage = () => {
-        goto(`/shoes?page=${desiredPage}`)
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+
+        // Set the page query parameter
+        params.set('page', desiredPage.toString());
+
+        // Navigate using SvelteKit's goto
+        goto(`${url.pathname}?${params}`);
     }
 
     let isSelecting = false
@@ -29,8 +43,6 @@
     const handlePress = () => {
         isSelecting = true
     }
-
-    $: $page.url, console.log('Currently selected', selected)
 
     const handleSelected = (shoe: IShoe, event: Event) => {
 
@@ -43,10 +55,38 @@
             }
         }
     }
+
+    function handlePage(pageNumber: number) {
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+
+        // Set the page query parameter
+        params.set('page', pageNumber.toString());
+
+        // Navigate using SvelteKit's goto
+        goto(`${url.pathname}?${params}`);
+    }
+
   </script>
 
-    <div class="mb-2">
-        <!-- this will house the toggle for selecting as well as a several methods of filtration -->
+    <div class="bg-white p-6 border shadow-sm rounded-lg mb-2 flex items-center flex-wrap gap-4">
+        <!-- Filter -->
+        <Filter/>
+        <!-- Search -->
+        <form method="GET" class="w-fit md:w-[400px] flex items-center gap-2">   
+            <Input type="search" placeholder="Search" name="name" />
+            <Button type="submit" class="text-white"><Icon icon="ph:magnifying-glass"/></Button>
+        </form>
+        <!-- Sort -->
+       <Sort/>
+        <!-- Inventory -->
+        <div class="flex gap-2 items-center 2xl:ml-auto">
+            <Label for="switch">In Store</Label>
+            <Switch />
+            <Label for="switch">Adding to Inventory</Label>
+            <Switch />
+        </div>
+    
     </div>
     
     {#if data.shoes.length === 0}
@@ -68,16 +108,17 @@
     {/if}
 
     <div class="flex justify-center items-center gap-2 mt-2 pb-2 md:pb-0">
-        <Button disabled={disablePrev} on:click={() => goto(`/shoes?page=${data.page - 1}`)}>Prev</Button>
+        <span>Showing: {data.shoes.length} of {data.count || 0}</span>
+        <Button disabled={disablePrev} on:click={() => handlePage(data.page - 1)}>Prev</Button>
 
         <Input
             type="number"
             class="w-16"
             min="0"
-            max={data.maxPage}
+            max={maxPage}
             bind:value={desiredPage}
             on:keydown={(event) => event.key === 'Enter' && navToPage()}
         />
 
-        <Button disabled={disableNext} on:click={() => goto(`/shoes?page=${data.page + 1}`)}>Next</Button>
+        <Button disabled={disableNext} on:click={() => handlePage(data.page + 1)}>Next</Button>
     </div>

@@ -50,6 +50,7 @@
 		"iconify-icon": "^2.0.0",
 		"jsonwebtoken": "^9.0.2",
 		"lucide-svelte": "^0.356.0",
+		"quagga": "^0.12.1",
 		"svelte-french-toast": "^1.2.0",
 		"svelte-gestures": "^4.0.0",
 		"svelte-radix": "^1.0.3",
