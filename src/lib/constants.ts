@@ -9,3 +9,5 @@ export const BRANDS = [
 	'Puma',
 	'Saucony'
 ];
+
+export const CATEGORIES = ['Cushioning', 'Lightweight', 'Racing', 'Road', 'Stability', 'Trail'];
