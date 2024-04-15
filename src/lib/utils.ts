@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { cubicOut } from 'svelte/easing';
+import { goto } from '$app/navigation';
 import type { TransitionConfig } from 'svelte/transition';
 
 export function cn(...inputs: ClassValue[]) {
@@ -60,7 +61,48 @@ export function getFilterParams(url: URL, param: string) {
 	return values.length > 0 ? values : null;
 }
 
-export function getSortParam(url: URL, defaultSort = '-created_at') {
+export function getPageParam(url: URL): number {
+	const pageNumberString = url.searchParams.get('page');
+	if (!pageNumberString) return 0;
+	const pageNumber = parseInt(pageNumberString);
+	return isNaN(pageNumber) ? 0 : pageNumber;
+}
+
+export function getRangeParams(
+	url: URL,
+	minRangeParamName: string,
+	maxRangeParamName: string
+): number[] | null {
+	const minRangeRaw = url.searchParams.get(minRangeParamName);
+	const maxRangeRaw = url.searchParams.get(maxRangeParamName);
+
+	// Ensure maxRange exists
+	if (!maxRangeRaw || isNaN(parseFloat(maxRangeRaw))) {
+		return null;
+	}
+
+	const minRange = minRangeRaw ? parseFloat(minRangeRaw) : 0;
+	const maxRange = parseFloat(maxRangeRaw);
+
+	// Enforce minRange <= maxRange
+	return [Math.min(minRange, maxRange), maxRange];
+}
+
+export function getSortParam(url: URL, defaultSort = ['created_at', 'desc']) {
 	const sort = url.searchParams.get('sort');
-	return sort || defaultSort; // Defaults to descending sort on created_at
+
+	if (!sort) {
+		return defaultSort; // Return default as an array
+	}
+
+	const [sortFieldRaw, sortOrder] = sort.split('|');
+	const sortField = sortFieldRaw === 'date' ? 'created_at' : sortFieldRaw;
+
+	return [sortField, sortOrder];
+}
+
+export function addSearchParam(field: string, value: string | number) {
+	const currentParams = new URLSearchParams(window.location.search);
+	currentParams.set(field, value.toString());
+	goto(`${window.location.pathname}?${currentParams}`);
 }
