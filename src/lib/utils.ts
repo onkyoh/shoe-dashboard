@@ -58,7 +58,7 @@ export const flyAndScale = (
 
 export function getFilterParams(url: URL, param: string) {
 	const values = url.searchParams.getAll(param);
-	return values.length > 0 ? values : null;
+	return values.length > 0 ? values.map((value) => value.split(',')) : null;
 }
 
 export function getPageParam(url: URL): number {
@@ -76,13 +76,8 @@ export function getRangeParams(
 	const minRangeRaw = url.searchParams.get(minRangeParamName);
 	const maxRangeRaw = url.searchParams.get(maxRangeParamName);
 
-	// Ensure maxRange exists
-	if (!maxRangeRaw || isNaN(parseFloat(maxRangeRaw))) {
-		return null;
-	}
-
 	const minRange = minRangeRaw ? parseFloat(minRangeRaw) : 0;
-	const maxRange = parseFloat(maxRangeRaw);
+	const maxRange = maxRangeRaw ? parseFloat(maxRangeRaw) : 15;
 
 	// Enforce minRange <= maxRange
 	return [Math.min(minRange, maxRange), maxRange];

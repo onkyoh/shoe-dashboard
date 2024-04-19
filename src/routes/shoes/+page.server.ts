@@ -30,10 +30,10 @@ export async function load({ locals, url }) {
 	if (brandSearch) {
 		query.likeAnyOf(
 			'name',
-			brandSearch[0].split(',').map((brand) => `%${brand}%`)
+			brandSearch.map((brand) => `%${brand}%`)
 		);
 	}
-	console.log(categorySearch);
+	
 	if (categorySearch) {
 		query.in('category', categorySearch);
 	}

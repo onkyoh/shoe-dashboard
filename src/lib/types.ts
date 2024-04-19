@@ -30,3 +30,11 @@ export interface IDataProps<T> {
 		props: T;
 	};
 }
+
+export interface RunMap {
+	label: string;
+	specs: {
+		name: string;
+		value: string[] | string | number;
+	}[];
+}

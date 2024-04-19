@@ -5,8 +5,20 @@
 	import Icon from "$lib/components/ui/icon/Icon.svelte";
 	import { BRANDS } from "$lib/constants";
 
-
     let {user, group} = $page.data
+
+    const SHOE_CHILDREN = [
+        {
+            title: "All",
+            isChild: true,
+            path: "/shoes",
+        },
+        ...BRANDS.map(brand => ({
+            title: brand,
+            isChild: true,
+            path: `/shoes?brands=${brand}`
+        })),
+    ]
 
     const routes = [
         {
@@ -31,15 +43,10 @@
         },
         {
             title: "Shoes",
-            icon: "mingcute:shoe-fill",
             path: "/shoes",
+            icon: "mingcute:shoe-fill",
+            children: SHOE_CHILDREN
         },
-        ...BRANDS.map(brand => ({
-            title: brand,
-            isChild: true,
-            path: `/shoes?brands=${brand}`
-        })),
-
         {
             title: "Scan",
             icon: "material-symbols:barcode",
@@ -58,6 +65,18 @@
             path: "/settings"
         }
     ]
+
+    let isExpanded: string[] = []
+
+    const toggleChildren = (title: string) => {
+        isExpanded = isExpanded.includes(title) ? isExpanded.filter(existing => existing !== title) : [...isExpanded, title]
+    }
+
+    // Closes expanded when path changes
+    $: {
+        const params = $page.url.searchParams;
+        isExpanded = [];
+    }
 
     const variantByPath = (path: string, currentPath: string | null, exclude?: string) => {
         if (currentPath?.includes(path) && (!exclude || !currentPath?.includes(exclude))) {
@@ -93,23 +112,41 @@
 
     <ul class="overflow-y-auto flex flex-col gap-1 h-full">
     {#each routes.filter(route => !route.isSecondary) as route}
-            {#if route.isChild}
-            <Button
-                href={route.path}
-                variant={variantByPath(route.path, $page.route.id) ? "default" : "ghost"}
-                class="px-4 py-2 text-sm w-full justify-start dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
-            >
-                <span class="inline ml-8">{route.title}</span>
-            </Button>
+            {#if route.children}
+                <Button
+                    on:click={() => toggleChildren(route.title)}
+                    variant={variantByPath(route.path, $page.route.id) ? "default" : "ghost"}
+                    class="px-4 py-2 text-sm w-full justify-start dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+                >
+                    <Icon icon={route.icon}/>   
+                    <span class="inline ml-2">{route.title}</span>
+                    {#if isExpanded.includes(route.title)}
+                        <Icon icon="heroicons-solid:minus" className="ms-auto"/>
+                    {:else}
+                        <Icon icon="heroicons-solid:plus" className="ms-auto"/>
+                    {/if}
+                </Button>
+                {#if isExpanded.includes(route.title)}
+                    {#each route.children as child}
+                        <Button
+                        href={child.path}
+                        variant="ghost"
+                        class="px-4 py-2 text-sm w-full justify-start dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+                    >
+                            <span class="inline ml-8">{child.title}</span>
+                        </Button>
+                    {/each}
+                {/if}
+                
             {:else}
-            <Button
-                href={route.path}
-                variant={variantByPath(route.path, $page.route.id) ? "default" : "ghost"}
-                class="px-4 w-full justify-start text-md dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
-            >
-                <Icon icon={route.icon}/>   
-                <span class="inline ml-2">{route.title}</span>
-            </Button>
+                <Button
+                    href={route.path}
+                    variant={variantByPath(route.path, $page.route.id) ? "default" : "ghost"}
+                    class="px-4 w-full justify-start text-md dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+                >
+                    <Icon icon={route.icon}/>   
+                    <span class="inline ml-2">{route.title}</span>
+                </Button>
             {/if}
         
     {/each}
