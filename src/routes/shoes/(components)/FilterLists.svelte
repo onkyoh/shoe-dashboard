@@ -5,16 +5,23 @@
 	export let state: string[];
 	export let all: string[];
 	export let name: string;
+
 </script>
 
 <Label class="capitalize">{name}:</Label>
-{#each all as item}
-	<Button
-		type="button"
-		variant={state.includes(item) ? 'default' : 'ghost'}
-		on:click={() =>
-			(state = state.includes(item) ? state.filter((b) => b !== item) : state.concat(item))}
-		>{item}</Button
-	>
-{/each}
+<ul class="flex flex-wrap gap-2">
+	{#each all as item}
+		<li>
+			<Button
+				type="button"
+				variant={state.includes(item) ? 'default' : 'ghost'}
+				class="border"
+				on:click={() =>
+					(state = state.includes(item) ? state.filter((b) => b !== item) : state.concat(item))}
+				>
+				{item}
+			</Button>
+		</li>
+	{/each}
+</ul>
 <input type="hidden" name={state.length > 0 ? name : ''} bind:value={state} />

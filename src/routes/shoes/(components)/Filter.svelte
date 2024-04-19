@@ -1,54 +1,45 @@
 <script lang="ts">
-	import * as Dialog from '$lib/components/ui/dialog';
-	import Label from '$lib/components/ui/label/label.svelte';
-	import { Input } from '$lib/components/ui/input';
-	import { BRANDS, CATEGORIES } from '$lib/constants';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import FilterLists from './FilterLists.svelte';
+    import * as Dialog from '$lib/components/ui/dialog';
+	import * as Tabs from "$lib/components/ui/tabs";
+    import Button from '$lib/components/ui/button/button.svelte';
+    import { page } from '$app/stores'
 
-	let brands: string[] = [];
-	let categories: string[] = [];
+	import SpecsForm from './SpecsForm.svelte';
+	import RunsForm from './RunsForm.svelte';
+
+    let selectedTab = 'shoe details';
+    let dialogOpen = false
+
+    const tabs = ['shoe details', 'run type']
 </script>
 
-<Dialog.Root>
-	<Dialog.Trigger class="font-sm rounded-lg border bg-primary px-4 py-2 font-semibold text-white"
-		>Filter</Dialog.Trigger
-	>
-	<Dialog.Content>
-		<Dialog.Header>
-			<Dialog.Title>Filtered Search</Dialog.Title>
-		</Dialog.Header>
-		<div class="relative">
-			<div class="absolute inset-0 flex items-center">
-				<span class="w-full border-t" />
-			</div>
-			<div class="relative flex justify-center text-xs uppercase">
-				<span class="bg-card px-2 text-muted-foreground"> By specs</span>
-			</div>
-		</div>
+<Dialog.Root bind:open={dialogOpen} >
+    <Dialog.Trigger class="font-sm rounded-lg border bg-primary px-4 py-2 font-semibold text-white" on:click={() => (dialogOpen = true)}
+        >Filter
+    </Dialog.Trigger>
+    <Dialog.Content class="overflow-y-auto max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] lg:max-w-[500px]">
+        <Dialog.Header>
+            <Dialog.Title>Filter By:</Dialog.Title>
+        </Dialog.Header>
 
-		<form method="GET">
-			<FilterLists state={brands} all={BRANDS} name="brands" />
-			<FilterLists state={categories} all={CATEGORIES} name="categories" />
+        <Tabs.Root value={selectedTab} onValueChange={(v) => {if (v) selectedTab = v}} class="w-full">
+            <Tabs.List class="w-full justify-between">
+                {#each tabs as tab}
+                    <Tabs.Trigger value={tab} class="capitalize flex-grow">{tab}</Tabs.Trigger>
+                {/each}
+            </Tabs.List>
+            <Tabs.Content value="shoe details" class="text-muted-foreground">Know what type of shoe you want or just want to compare your options? Filter shoes by their specifications.</Tabs.Content>
+            <Tabs.Content value="run type" class="text-muted-foreground">Need a shoe to get into running or complete your collection? Filter shoes by your running needs.</Tabs.Content>
+        </Tabs.Root>
 
-			<Label>Weight:</Label>
-			<div class="flex items-center gap-2">
-				<Input type="number" name="minWeight" /> TO <Input type="number" name="maxWeight" />
-			</div>
-			<Label>Heel Drop:</Label>
-			<div class="flex items-center gap-2">
-				<Input type="number" name="minDrop" /> TO <Input type="number" name="maxDrop" />
-			</div>
-			<button type="submit">Filter</button>
-		</form>
+        <form method="GET" class="flex flex-col gap-6">
+            {#if selectedTab === 'shoe details'}
+                <SpecsForm />
+			{:else}
+				<RunsForm/>
+			{/if}
 
-		<div class="relative">
-			<div class="absolute inset-0 flex items-center">
-				<span class="w-full border-t" />
-			</div>
-			<div class="relative flex justify-center text-xs uppercase">
-				<span class="bg-card px-2 text-muted-foreground"> Or by condition </span>
-			</div>
-		</div>
-	</Dialog.Content>
+            <Button type="submit" on:click={() => (dialogOpen = false)}>Search</Button>
+        </form>
+    </Dialog.Content>
 </Dialog.Root>
