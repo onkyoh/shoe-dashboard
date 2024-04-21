@@ -5,7 +5,7 @@
 	export let state: string[];
 	export let all: string[];
 	export let name: string;
-
+	export let updateState: (newState: string[]) => void;
 </script>
 
 <Label class="capitalize">{name}:</Label>
@@ -17,8 +17,8 @@
 				variant={state.includes(item) ? 'default' : 'ghost'}
 				class="border"
 				on:click={() =>
-					(state = state.includes(item) ? state.filter((b) => b !== item) : state.concat(item))}
-				>
+					updateState(state.includes(item) ? state.filter((b) => b !== item) : state.concat(item))}
+			>
 				{item}
 			</Button>
 		</li>
