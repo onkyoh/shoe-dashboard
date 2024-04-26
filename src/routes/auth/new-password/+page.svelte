@@ -1,16 +1,15 @@
 <script>
-    import { Button } from "$lib/components/ui/button";
-    import Spinner from "$lib/components/ui/spinner/spinner.svelte";
+    import { Button } from "$lib/components/ui/form";
     import * as Card from "$lib/components/ui/card";
     import { Input } from "$lib/components/ui/input";
     import { Label } from "$lib/components/ui/label"
     import { toast } from 'svelte-french-toast'
-	import Separator from "$lib/components/ui/separator/separator.svelte";
+	  import Separator from "$lib/components/ui/separator/separator.svelte";
   
     export let data
     let { supabase } = data
     $: ({ supabase } = data)
-  
+
     let newPassword = '';
     let confirmPassword = '';
     let submitting = false;
@@ -32,15 +31,12 @@
           throw new Error(error.message || 'Failed to update password');
         }
   
-        toast.success('Password updated successfully! Redirecting...');
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 2000);
- 
+        toast.success('Password updated successfully!');
+        window.location.href = '/'; 
 
       } catch (err) {
         console.error(err);
-        toast.error(err.message || 'Failed to update password'); 
+        toast.error(err?.message || 'Failed to update password'); 
       } finally {
         submitting = false;
       }
@@ -62,8 +58,7 @@
         <Input type="password" id="confirmPassword" bind:value={confirmPassword} required />
       </Card.Content>
       <Card.Footer>
-        <Button class="w-full" type="submit" disabled={submitting}>
-          {#if submitting}<Spinner className="text-white mr-2"/>{/if}
+        <Button isSubmitting={submitting}>
           Update Password
         </Button>
       </Card.Footer>

@@ -2,7 +2,6 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { page } from '$app/stores';
 
 	import SpecsForm from './SpecsForm.svelte';
 	import RunsForm from './RunsForm.svelte';
@@ -12,7 +11,6 @@
 
 	const tabs = ['shoe details', 'run type'];
 
-	const handleClearFilter = () => {};
 </script>
 
 <Dialog.Root bind:open={dialogOpen}>

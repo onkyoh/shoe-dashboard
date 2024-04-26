@@ -1,7 +1,6 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card';
-	import { Separator } from '$lib/components/ui/separator';
 	import type { IShoe } from '$lib/types';
+	import * as Card from '$lib/components/ui/card';
 	import { cn } from '$lib/utils';
 	import 'iconify-icon';
 
@@ -28,3 +27,4 @@
 		</p>
 	</Card.Footer>
 </Card.Root>
+

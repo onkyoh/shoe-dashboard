@@ -15,19 +15,8 @@
 	export let user: User 
 
 	const roles = [
-        {
-            value: "admin",
-            label: "Admin"
-        },
-		{
-			value: "viewer",
-			label: "Viewer",
-		},
-		{
-			value: "editor",
-			label: "Editor",
-		},
-	];
+		'admin', 'editor', 'viewer'
+	]
 
 	const isAdmin = groupMembers.find(member => member.role === "admin" && member.users?.id === user?.id)
 
@@ -52,7 +41,7 @@
 		<Card.Description>Anyone with this link can join this group.</Card.Description>
 		<div class="flex space-x-2">
 			<Input value={shareLink} readonly />
-			<Button variant="secondary" class="shrink-0" on:click={copyLink}>Copy Link</Button>
+			<Button on:click={copyLink}>Copy Link</Button>
 		</div>
 	</Card.Header>
 	{:else}
@@ -61,7 +50,7 @@
 	</Card.Header>
 	{/if}
 	<Card.Content>		
-		<Separator class="my-4" />
+		<Separator class="mb-4" />
 		<div class="space-y-4">
 		
 			<h4 class="text-sm font-medium">Members</h4>
@@ -76,14 +65,14 @@
 							{member.users?.name}
 						</div>
 						{#if isAdmin}
-						<Select.Root selected={member.role}>
+						<Select.Root selected={{value: member.role}}>
 							<Select.Trigger class="ml-auto w-[120px]">
-								<Select.Value value={member.role} placeholder={member.role} class="capitalize"/>
+								<Select.Value placeholder={member.role} class="capitalize"/>
 							</Select.Trigger>
 							<Select.Content>
 								{#each roles as role}
-									<Select.Item value={role.value} label={role.label}
-										>{role.label}</Select.Item
+									<Select.Item value={role} label={role} class="capitalize"
+										>{role}</Select.Item
 									>
 								{/each}
 							</Select.Content>

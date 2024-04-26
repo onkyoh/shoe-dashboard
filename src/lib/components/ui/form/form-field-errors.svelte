@@ -4,7 +4,7 @@
 
 	type $$Props = FormPrimitive.FieldErrorsProps & {
 		errorClasses?: string | undefined | null;
-		errors: string[] | undefined;
+		errors?: string[] | undefined;
 	};
 
 	let className: $$Props["class"] = undefined;

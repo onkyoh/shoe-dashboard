@@ -7,37 +7,38 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 		error(400, 'Invite link invalid');
 	}
 
-	const { supabase, getSession } = locals;
+	const { supabase, safeGetSession } = locals;
 
-	const session = await getSession();
+	const { user } = await safeGetSession();
 
-	if (!session) {
+	if (!user) {
 		error(401, 'Must be logged in');
 	}
 
-	const { data: user, error: userError } = await supabase
+	const { data: userData, error: userError } = await supabase
 		.from('users')
 		.select('*')
-		.eq('id', session.user.id)
+		.eq('id', user.id)
 		.single();
 
-	if (userError || !user) {
+	if (userError || !userData) {
 		error(401, 'User not found');
 	}
 
-	if (user.group_id) {
+	if (userData.group_id) {
 		error(409, 'User already in a group');
 	}
 
 	const decoded = Buffer.from(link, 'base64url').toString();
 	const [group_id, timestamp] = decoded.split('|');
+
 	if (parseInt(timestamp) < Date.now() / 1000) {
 		error(410, 'Invite link expired');
 	}
 
 	const { error: groupError } = await supabase
 		.from('group_members')
-		.insert([{ group_id, user_id: session.user.id, role: 'viewer' }]);
+		.insert([{ group_id, user_id: user.id, role: 'viewer' }]);
 
 	if (groupError) {
 		error(500, groupError);
@@ -46,13 +47,13 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 	const { error: groupIdError } = await supabase
 		.from('users')
 		.update({ group_id })
-		.eq('id', session.user.id);
+		.eq('id', userData.id);
 
 	if (groupIdError) {
 		error(500, groupIdError);
 	}
 
 	return {
-		name: user.name
+		name: userData.name
 	};
 };
