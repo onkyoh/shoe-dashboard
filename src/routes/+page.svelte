@@ -18,25 +18,24 @@
 				>An overview of all the latest releases in the running shoe world.</Card.Description
 			>
 		</Card.Header>
-		<Separator class="mb-4" />
-		<Card.Content>
-			{#if shoes.length > 0}
-				<Carousel.Root class="w-full border-l border-r lg:w-11/12">
-					<Carousel.Content class="ml-0 gap-2">
-						{#each shoes as shoe}
-							<Carousel.Item
-								class="basis-1/2 p-0 sm:basis-1/3 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
-								><ShoeCard {shoe} /></Carousel.Item
-							>
-						{/each}
-					</Carousel.Content>
-					<Carousel.Next class="hidden lg:flex" />
-				</Carousel.Root>
-			{:else}
-				<p>No shoes found</p>
-			{/if}
-		</Card.Content>
 	</Card.Root>
+
+	{#if shoes.length > 0}
+		<Carousel.Root class="w-full border-l border-r right-inner-shadow" opts={{ skipSnaps: true }}>
+			<Carousel.Content class="ml-0 gap-2">
+				{#each shoes as shoe}
+					<Carousel.Item
+						class="basis-1/2 p-0 sm:basis-1/3 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
+						><a href={`/shoes/${shoe.name}`}><ShoeCard {shoe} /></a></Carousel.Item
+					>
+				{/each}
+			</Carousel.Content>
+
+		</Carousel.Root>
+	{:else}
+		<p>No shoes found</p>
+	{/if}
+
 
 	<Card.Root>
 		<Card.Header>
@@ -44,10 +43,9 @@
 			<Card.Description>A recap of all of you and your groups most recent updates.</Card.Description
 			>
 		</Card.Header>
-		<Separator class="mb-4" />
-		<Card.Content>
+	</Card.Root>
 			{#if data.shoes.length > 0}
-				<Carousel.Root class="w-full border-l border-r lg:w-11/12">
+				<Carousel.Root class="w-full border-l border-r">
 					<Carousel.Content class="ml-0 gap-2">
 						{#each data.shoes as shoe}
 							<Carousel.Item
@@ -56,13 +54,12 @@
 							>
 						{/each}
 					</Carousel.Content>
-					<Carousel.Next class="hidden lg:flex" />
+		
 				</Carousel.Root>
 			{:else}
 				<p>No activity found</p>
 			{/if}
-		</Card.Content>
-	</Card.Root>
+		
 
 	<Card.Root>
 		<Card.Header>
@@ -72,23 +69,22 @@
 				shoes.</Card.Description
 			>
 		</Card.Header>
-		<Separator class="mb-4" />
-		<Card.Content>
-			{#if data.shoes.length > 0}
-				<Carousel.Root class="w-full border-l border-r lg:w-11/12">
-					<Carousel.Content class="ml-0 gap-2">
-						{#each data.shoes as shoe}
-							<Carousel.Item
-								class="basis-1/2 p-0 sm:basis-1/3 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
-								><ShoeCard {shoe} /></Carousel.Item
-							>
-						{/each}
-					</Carousel.Content>
-					<Carousel.Next class="hidden lg:flex" />
-				</Carousel.Root>
-			{:else}
-				<p>No resources found</p>
-			{/if}
-		</Card.Content>
 	</Card.Root>
+	{#if data.shoes.length > 0}
+		<Carousel.Root class="w-full border-l border-r">
+			<Carousel.Content class="ml-0 gap-2">
+				{#each data.shoes as shoe}
+					<Carousel.Item
+						class="basis-1/2 p-0 sm:basis-1/3 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
+						><ShoeCard {shoe} /></Carousel.Item
+					>
+				{/each}
+			</Carousel.Content>
+
+		</Carousel.Root>
+	{:else}
+		<p>No resources found</p>
+	{/if}
+
+
 </section>

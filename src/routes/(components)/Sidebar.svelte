@@ -99,8 +99,8 @@
     <div>
             {#if user}
             <div class="px-4 py-2">
-                <p class="font-bold">{user?.name || 'Create and Account or Login'} </p>
-                {#if group}<p>{group?.name}</p>{:else}<p class="text-muted-foreground">Not in a group</p>{/if}
+                <p class="font-semibold">{user?.name || 'Create and Account or Login'} </p>
+                {#if group}<p class="text-muted-foreground">{group?.name}</p>{:else}<p class="text-muted-foreground">Not in a group</p>{/if}
             </div>
                 {:else}
             <div class="flex gap-2">

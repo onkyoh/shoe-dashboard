@@ -13,9 +13,13 @@ declare global {
 		interface PageData {
 			session: Session | null;
 		}
-		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
+		interface Error {
+			message?: string;
+			link?: {
+				href: string;
+				label: string;
+			};
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}

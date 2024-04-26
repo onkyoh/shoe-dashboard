@@ -42,7 +42,7 @@
 	<Icon icon="noto:running-shoe" />
 </div>
 
-<div class="mt-16 flex h-full w-full gap-2 bg-slate-100 p-2 md:mt-0 md:flex-row">
+<div class="flex h-full w-full gap-2 bg-slate-100 p-2 md:mt-0 md:flex-row">
 	<aside
 		class={cn(
 			openNav ? 'left-0' : 'left-[-300%]',
@@ -58,13 +58,13 @@
 			type="button"
 			aria-label="close sidebar"
 			in:fade={{ duration: 300 }}
-			class="fixed inset-0 left-[300px] top-0 z-50 h-screen w-full bg-background/80 backdrop-blur-sm md:hidden"
+			class="fixed inset-0 left-[300px] top-0 z-50 h-screen w-full md:hidden"
 			on:click={toggleOpenNav}
 			on:keydown={toggleOpenNav}
 		></button>
 	{/if}
 
-	<main id="main" class="h-[calc(100vh-1rem)] w-full overflow-y-auto overflow-x-hidden">
+	<main id="main" class="h-[calc(100vh-1rem)] w-full pt-16 md:pt-0 overflow-y-auto overflow-x-hidden">
 		<slot />
 	</main>
 </div>

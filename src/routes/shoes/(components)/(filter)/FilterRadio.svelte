@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
-	import type { RunMap } from '$lib/types';
+	import type { RunMap } from '../../types';
 
 	export let state: RunMap | null;
 	export let all: RunMap[];

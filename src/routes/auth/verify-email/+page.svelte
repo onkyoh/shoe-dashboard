@@ -1,5 +1,6 @@
 <script lang="ts">
     import * as Card from "$lib/components/ui/card";
+    import Link from "$lib/components/ui/link/Link.svelte";
 </script>
 
 <Card.Root class="w-full max-w-[600px]">
@@ -13,7 +14,7 @@
         </p>
         <p>
             Didn't receive an email? 
-            <a href="/auth/resend-verification" class="text-primary hover:underline">Request another verification email</a>.
+            <Link href="/auth/resend-verification">Request another verification email.</Link>
         </p>
     </Card.Content>
 </Card.Root>

@@ -11,6 +11,7 @@
     } from "sveltekit-superforms";
     import { zodClient } from "sveltekit-superforms/adapters";
     import { toast } from 'svelte-french-toast';
+	import Link from "$lib/components/ui/link/Link.svelte";
 
 
     export let data;
@@ -26,16 +27,25 @@
 
     const form = superForm(data.form, {
       validators: zodClient(loginSchema),
+      onUpdated({ form: f }) {
+        if (f.valid) {
+          toast.success('Login successful!');
+        } else {
+          if (f.errors._errors) {
+            f.errors._errors.forEach((message) => {
+            toast.error(message);
+          })
+          } else {
+            toast.error('An error occured, try again later');
+          }
+        }
+      },
     });
    
-    const { form: formData, enhance, errors, submitting, constraints, message } = form;
+    const { form: formData, enhance, submitting, constraints } = form;
 
     // Define the type of fields as an array of strings
     const fields: Array<keyof typeof $formData> = ['email', 'password'];
-
-      $: if ($message) {
-      toast.error($message);
-    }
       
   </script>
 
@@ -71,13 +81,13 @@
           <Form.Label class="capitalize">{field}</Form.Label>
           <Input {...attrs} bind:value={$formData[field]} type={field} {...$constraints[field]}/>
         </Form.Control>
-        <Form.FieldErrors errors={$errors[field]}/>
+        <Form.FieldErrors/>
       </Form.Field>
       {/each}
   </Card.Content>
   <Card.Footer class="grid gap-2">
-    <Button class="w-full" type="submit">{#if $submitting}<Spinner className="text-white mr-2"/>{/if}Log In</Button>
-   <a href="/auth/reset-password" class="text-center text-sm text-blue-500">Forgot Password?</a>
+    <Form.Button isSubmitting={$submitting}>Log In</Form.Button>
+    <Link href="/auth/reset-password" className="text-center text-sm">Forgot Password?</Link>
   </Card.Footer>
 </form>
 </Card.Root>

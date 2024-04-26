@@ -1,6 +1,5 @@
 <script>
-	import { Button } from "$lib/components/ui/button";
-  import Spinner from "$lib/components/ui/spinner/spinner.svelte";
+  import {Button} from '$lib/components/ui/form'
   import * as Card from "$lib/components/ui/card";
 	import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label"
@@ -62,8 +61,7 @@
         <Input type="email" id="email" bind:value={email} placeholder="johndoe@email.com" required/>
       </Card.Content>
       <Card.Footer>
-        <Button class="w-full" type="submit" disabled={sending} >
-          {#if sending}<Spinner className="text-white mr-2"/>{/if}
+        <Button isSubmitting={sending} >
           Send Verification Email
         </Button>
       </Card.Footer>

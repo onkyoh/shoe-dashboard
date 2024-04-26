@@ -31,10 +31,14 @@ export interface IDataProps<T> {
 	};
 }
 
-export interface RunMap {
-	label: string;
-	specs: {
+export interface INote {
+	shoe_name: string;
+	content: string;
+	created_at: string;
+	group_id: string | null;
+	id: string;
+	user_id: string;
+	users: {
 		name: string;
-		value: string[] | string | number;
-	}[];
+	};
 }

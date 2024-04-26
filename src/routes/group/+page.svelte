@@ -3,8 +3,8 @@
   import Create from './(components)/create.svelte';
 
   export let data
-    let { supabase, user, group, groupMembers, shareLink } = data
-    $: ({ supabase, user, group, groupMembers } = data)
+  let { user, group, groupMembers, shareLink } = data
+  $: ({ user, group, groupMembers, shareLink } = data)
 
 </script>
 
