@@ -33,7 +33,7 @@ export async function load({ locals, url }) {
 			brandSearch.map((brand) => `%${brand}%`)
 		);
 	}
-	
+
 	if (categorySearch) {
 		query.in('category', categorySearch);
 	}
