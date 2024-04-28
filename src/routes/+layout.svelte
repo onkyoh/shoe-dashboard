@@ -36,10 +36,10 @@
 
 <Toaster />
 <div
-	class="fixed top-0 z-10 flex h-16 w-full items-center justify-between border bg-white p-2 shadow-sm md:hidden"
+	class="fixed top-0 z-10 flex h-16 w-full items-center justify-between border bg-white p-2 md:hidden"
 >
-	<Button on:click={toggleOpenNav}><Icon icon="material-symbols:menu" /></Button>
-	<Icon icon="noto:running-shoe" />
+	<Button on:click={toggleOpenNav} variant="ghost"><Icon icon="material-symbols:menu" /></Button>
+	<a href="/" class="font-semibold text-primary">Shoe Dashboard</a>
 </div>
 
 <div class="flex h-full w-full gap-2 bg-slate-100 p-2 md:mt-0 md:flex-row">
@@ -64,7 +64,10 @@
 		></button>
 	{/if}
 
-	<main id="main" class="h-[calc(100vh-1rem)] w-full pt-16 md:pt-0 overflow-y-auto overflow-x-hidden">
+	<main
+		id="main"
+		class="h-[calc(100vh-1rem)] w-full overflow-y-auto overflow-x-hidden pb-2 pt-16 md:pb-0 md:pt-0"
+	>
 		<slot />
 	</main>
 </div>

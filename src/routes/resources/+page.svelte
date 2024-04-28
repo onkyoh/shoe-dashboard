@@ -1,5 +1,4 @@
 <script lang="ts">
-
 </script>
 
-resources
+resources sada
