@@ -27,6 +27,7 @@ export const actions: Actions = {
 			email: form.data.email,
 			password: form.data.password,
 			options: {
+				emailRedirectTo: 'http://localhost:5173/redirect',
 				data: {
 					name: form.data.name
 				}

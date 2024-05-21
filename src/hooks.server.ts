@@ -1,8 +1,9 @@
+import type { Database } from '$lib/schema';
 import { createServerClient } from '@supabase/ssr';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.supabase = createServerClient(
+	event.locals.supabase = createServerClient<Database>(
 		import.meta.env.VITE_PUBLIC_SUPABASE_URL,
 		import.meta.env.VITE_PUBLIC_SUPABASE_KEY,
 		{

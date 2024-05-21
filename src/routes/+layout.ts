@@ -1,10 +1,11 @@
 import type { LayoutLoad } from './$types';
+import type { Database } from '$lib/schema';
 import { createBrowserClient, isBrowser, parse } from '@supabase/ssr';
 
 export const load: LayoutLoad = async ({ fetch, data, depends }) => {
 	depends('supabase:auth');
 
-	const supabase = createBrowserClient(
+	const supabase = createBrowserClient<Database>(
 		import.meta.env.VITE_PUBLIC_SUPABASE_URL,
 		import.meta.env.VITE_PUBLIC_SUPABASE_KEY,
 		{

@@ -20,11 +20,13 @@
 	}
 
     let runOptions: RunMap[] = RUNS; 
+	
     $: if (pronation && pronation.label === "Overpronation") {
         runOptions = STABLE_RUNS;
     } else {
         runOptions = RUNS;
     }
+
 	// Initialize state from page store on mount
 	$: if ($page.url.searchParams.has('state')) {
 		const storedState = JSON.parse($page.url.searchParams.get('state') || '');

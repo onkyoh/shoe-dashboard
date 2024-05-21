@@ -2,10 +2,12 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { page } from '$app/stores';
 	import { Separator } from '$lib/components/ui/separator/index.js';
-	import Icon from '$lib/components/ui/icon/Icon.svelte';
+	import Icon from '$lib/components/ui/icon';
 	import { BRANDS } from '$lib/constants';
+	import Search from '../shoes/(components)/(search)/Search.svelte';
 
 	let { user, group } = $page.data;
+
 
 	const SHOE_CHILDREN = [
 		{
@@ -43,22 +45,11 @@
 			children: SHOE_CHILDREN
 		},
 		{
-			title: 'Scan',
-			icon: 'material-symbols:barcode',
-			path: '/scan'
-		},
-		{
 			title: 'Profile',
 			isSecondary: true,
 			icon: 'iconamoon:profile-fill',
 			path: '/profile'
 		},
-		{
-			title: 'Settings',
-			isSecondary: true,
-			icon: 'solar:settings-bold',
-			path: '/settings'
-		}
 	];
 
 	let isExpanded: string[] = [];
@@ -118,14 +109,14 @@
 					<Button
 						on:click={() => toggleChildren(route.title)}
 						variant={variantByPath(route.path, $page.route.id) ? 'default' : 'ghost'}
-						class="w-full justify-start px-4 py-2 text-sm dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+						class="w-full justify-start px-4 py-2 text-sm"
 					>
 						<Icon icon={route.icon} />
 						<span class="ml-2 inline">{route.title}</span>
 						{#if isExpanded.includes(route.title)}
-							<Icon icon="heroicons-solid:minus" className="ms-auto" />
+							<Icon icon="heroicons-solid:minus" class="ms-auto" />
 						{:else}
-							<Icon icon="heroicons-solid:plus" className="ms-auto" />
+							<Icon icon="heroicons-solid:plus" class="ms-auto" />
 						{/if}
 					</Button>
 					{#if isExpanded.includes(route.title)}
@@ -133,7 +124,7 @@
 							<Button
 								href={child.path}
 								variant="ghost"
-								class="w-full justify-start px-4 py-2 text-sm dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+								class="w-full justify-start px-4 py-2 text-sm"
 							>
 								<span class="ml-8 inline">{child.title}</span>
 							</Button>
@@ -143,7 +134,7 @@
 					<Button
 						href={route.path}
 						variant={variantByPath(route.path, $page.route.id) ? 'default' : 'ghost'}
-						class="text-md w-full justify-start px-4 dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+						class="text-md w-full justify-start px-4"
 					>
 						<Icon icon={route.icon} />
 						<span class="ml-2 inline">{route.title}</span>
@@ -155,7 +146,7 @@
 				<Button
 					href={route.path}
 					variant={variantByPath(route.path, $page.route.id) ? 'default' : 'ghost'}
-					class="text-md w-full justify-start px-4 dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white"
+					class="text-md w-full justify-start px-4"
 				>
 					<Icon icon={route.icon} />
 					<span class="ml-2 inline">{route.title}</span>

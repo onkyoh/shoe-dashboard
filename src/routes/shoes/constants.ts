@@ -1,5 +1,13 @@
 import type { RunMap } from './types';
 
+export const SORT_OPTIONS = [
+	{ value: 'date|asc', label: 'Release Date (Low to High)' },
+	{ value: 'date|desc', label: 'Release Date (High to Low)' },
+	{ value: 'drop|asc', label: 'Heel Drop (Low to High)' },
+	{ value: 'drop|desc', label: 'Heel Drop (High to Low)' },
+	{ value: 'weight|asc', label: 'Weight (Low to High)' },
+	{ value: 'weight|desc', label: 'Weight (High to Low)' }
+];
 export const RUNS: RunMap[] = [
 	{
 		label: 'Race',

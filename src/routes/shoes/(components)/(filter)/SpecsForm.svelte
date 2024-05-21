@@ -43,7 +43,7 @@
 	onChange={(v) => {
 		weightRange = [...v];
 	}}
-	unit=" oz"
+	unit="oz"
 />
 <FilterRange
 	state={heelDropRange}

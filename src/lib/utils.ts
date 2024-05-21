@@ -101,3 +101,18 @@ export function addSearchParam(field: string, value: string | number) {
 	currentParams.set(field, value.toString());
 	goto(`${window.location.pathname}?${currentParams}`);
 }
+
+export function formatCreatedAt(createdAt: string | null) {
+	if (!createdAt) return null;
+	return new Date(createdAt).toLocaleDateString('en-US');
+}
+
+export function formatName(name: string): string {
+	const parts = name.split(' ');
+	if (parts.length > 1) {
+		const lastName = parts.pop();
+		if (!lastName) return name;
+		return `${parts.join(' ')} ${lastName[0]}`;
+	}
+	return name;
+}

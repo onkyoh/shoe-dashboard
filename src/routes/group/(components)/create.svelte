@@ -1,12 +1,20 @@
+<script lang="ts" context="module">
+  import { z } from 'zod';
+
+  export const groupSchema = z.object({
+    name: z.string().min(3).max(30)
+  });
+
+  export type GroupSchema = typeof groupSchema;
+
+</script>
+
 <script lang="ts">
     import { superForm } from 'sveltekit-superforms';
     import { zodClient } from 'sveltekit-superforms/adapters';
-    import { groupSchema } from '../schema'; // Assuming Zod schema
-
     import * as Form from "$lib/components/ui/form";
     import { Input } from "$lib/components/ui/input";
     import * as Card from "$lib/components/ui/card/index.js";
-
     import { toast } from 'svelte-french-toast';
      
     export let dataForm
@@ -30,7 +38,7 @@
       <Card.Title class="text-2xl">Create a Group</Card.Title>
       <Card.CardDescription>Get started with a group to share and learn everything running shoes!</Card.CardDescription>
     </Card.Header>
-    <form method="POST" action="?/create" use:enhance>
+    <form method="POST" action="?/createGroup" use:enhance>
       <Card.CardContent>
         <Form.Field {form} name={'name'}>
           <Form.Control let:attrs>

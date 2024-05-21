@@ -16,7 +16,7 @@
 
 <div class="flex justify-between">
     <Label>{label}:</Label>
-    <span>{`${state[0]} to ${state[1]}`}{unit}</span>
+    <span class="text-sm text-muted-foreground">{`${state[0]} to ${state[1]}`}{unit}</span>
 </div>
 
 <Slider value={[state[0], state[1]]} step={0.5} max={max} onValueChange={onChange} />
