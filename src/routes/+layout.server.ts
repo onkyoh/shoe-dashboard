@@ -32,7 +32,6 @@ export const load: LayoutServerLoad = async ({ locals: { safeGetSession, supabas
 			group: groupData
 		};
 	} catch (error) {
-		console.error('Error loading user data:', error);
 		return {
 			session,
 			user: null,

@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from './$types.js';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { superValidate, setError } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { loginSchema } from './schema';
@@ -32,6 +32,8 @@ export const actions: Actions = {
 			return setError(form, error.message);
 		}
 
-		redirect(303, '/');
+		return {
+			form
+		};
 	}
 };

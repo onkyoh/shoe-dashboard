@@ -1,20 +1,21 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import type { IShoe } from '$lib/types';
+	import { addSearchParam, cn } from "$lib/utils";
+	import { fade } from "svelte/transition";
+	import { page } from "$app/stores";
 
-	import { cn, addSearchParam } from '$lib/utils';
-	import { press } from 'svelte-gestures';
+	import { Button } from "$lib/components/ui/button";
+	import { Input } from "$lib/components/ui/input";
 
-	import { Button } from '$lib/components/ui/button';
-	import { Input } from '$lib/components/ui/input';
+	import ShoeCard from "$lib/components/shoes/ShoeCard.svelte";
+	import Sort from "$lib/components/sort/Sort.svelte";
+	import Search from "$lib/components/search/Search.svelte";
+	import MobileSort from "$lib/components/sort/MobileSort.svelte";
+	import Filter from "$lib/components/filter/Filter.svelte";
 
-	import ShoeCard from './(components)/ShoeCard.svelte';
-	import Filter from './(components)/(filter)/Filter.svelte';
-	import Sort from './(components)/Sort.svelte';
-	import Search from './(components)/Search.svelte';
+	import type { PageData } from "./$types";
+
 
 	export let data: PageData;
-	let { supabase } = data;
 
 	$: desiredPage = data.page;
 	$: maxPage = Math.ceil((data.count || 0) / 20);
@@ -22,81 +23,100 @@
 	$: disablePrev = data.page <= 0;
 	$: disableNext = data.page >= maxPage - 1;
 
-	let isSelecting = false;
-	let selected: IShoe[] = [];
+	$: floor = data.shoes.length * (data.page) + 1
+	$: ciel = data.page * 20 + data.shoes.length
 
-	const handlePress = () => {
-		isSelecting = true;
-	};
 
-	const handleSelected = (shoe: IShoe, event: Event) => {
-		if (isSelecting) {
-			event.preventDefault();
-			if (selected.includes(shoe)) {
-				selected = selected.filter((s) => s !== shoe);
-			} else {
-				selected = [...selected, shoe];
-			}
-		}
-	};
+	let mobileFilterOpen = false
+	const toggleMobileFilter = () => {
+		mobileFilterOpen = !mobileFilterOpen
+	}
+	$: $page.url.pathname, (mobileFilterOpen = false);
+
 </script>
 
-<div class="mb-2 hidden items-center justify-between gap-2 rounded-lg border bg-white p-6 md:flex">
-	<!-- Filter -->
-	<Filter />
-	<!-- Search -->
-	<Search {supabase} />
-	<!-- Sort -->
-	<Sort />
-</div>
+<section class="flex flex-col gap-2">
+	<div class="md:hidden">
+		<Button class="w-full" on:click={toggleMobileFilter}>Filter & Sort</Button>
+	</div>
+	<div class="hidden md:flex justify-between">
+		<Search class="w-[400px]"/>
+		<Sort />
+	</div>
+	<div class="flex gap-2">
 
-<div class="mb-2 grid grid-cols-1 grid-rows-2 gap-2 rounded-lg border bg-white p-6 md:hidden">
-	<!-- Search -->
-	<Search {supabase} className="row-span-1 col-span-2 w-full" />
-	<!-- Filter -->
-	<Filter />
-	<!-- Sort -->
-	<Sort />
-</div>
+	<div class="overflow-y-auto h-full md:w-[calc(100%-300px)]">
 
-<div class="h-[calc(100%-10rem)] overflow-auto md:h-[calc(100%-7rem)]">
-	{#if data.shoes.length === 0}
-		<p class="mx-auto w-fit rounded-md border bg-white px-4 py-2 shadow-sm">No shoes found</p>
-	{:else}
-		<div
-			class="grid max-w-full grid-cols-2 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
-		>
-			{#each data.shoes as shoe (shoe.id)}
-				<a
-					href={`/shoes/${shoe.name}`}
-					use:press={{ timeframe: 300, triggerBeforeFinished: true }}
-					on:press={handlePress}
-					on:click={(event) => handleSelected(shoe, event)}
-					class={cn('rounded-md', selected.includes(shoe) ? 'ring-2 ring-primary/50' : '')}
-				>
-					<ShoeCard {shoe} />
-				</a>
-			{/each}
+
+		<!-- Shoe Grid -->
+		{#if data.shoes.length === 0}
+			<p class="mx-auto w-fit rounded-md border bg-white p-4 py-2 shadow-sm">No shoes found</p>
+		{:else}
+			<div
+				class="grid max-w-full grid-cols-2 gap-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+			>
+				{#each data.shoes as shoe (shoe.id)}
+					<a
+						href={`/shoes/${shoe.name}`}
+					>
+						<ShoeCard {shoe} class="border-2 hover:border-primary"/>
+					</a>
+				{/each}
+			</div>
+		{/if}
+
+		<!-- Pagination -->
+
+		<div class="mt-2 flex items-center justify-center gap-2">
+			<span>{floor} to {ciel} of {data.count || 0}</span>
+			<Button disabled={disablePrev} on:click={() => addSearchParam('page', data.page - 1)}
+				>Prev</Button
+			>
+
+			<Input
+				type="number"
+				class="w-16"
+				min="0"
+				max={maxPage}
+				bind:value={desiredPage}
+				on:keydown={(event) => event.key === 'Enter' && addSearchParam('page', desiredPage)}
+			/>
+
+			<Button disabled={disableNext} on:click={() => addSearchParam('page', data.page + 1)}
+				>Next</Button
+			>
 		</div>
+	</div>
+
+	<!-- Filter Sidebar -->
+	<aside
+		class={cn(
+			mobileFilterOpen ? 'right-0' : 'right-[-300%]',
+			'fixed top-0 z-30 w-[300px] bg-white p-6 border rounded-md h-full',
+			'md:relative md:block md:right-0'
+		)}
+	>	
+		<MobileSort/>
+		<Filter/>
+	</aside>
+
+	{#if mobileFilterOpen}
+		<button
+			aria-label="close filter sidebar"
+			in:fade={{ duration: 300 }}
+			class="fixed inset-0 right-[300px] left-0 top-0 z-20 h-screen w-full md:hidden"
+			on:click={toggleMobileFilter}
+			on:keydown={toggleMobileFilter}
+		></button>
 	{/if}
 
-	<div class="mt-2 flex items-center justify-center gap-2">
-		<span>Showing: {data.shoes.length} of {data.count || 0}</span>
-		<Button disabled={disablePrev} on:click={() => addSearchParam('page', data.page - 1)}
-			>Prev</Button
-		>
+</section>
 
-		<Input
-			type="number"
-			class="w-16"
-			min="0"
-			max={maxPage}
-			bind:value={desiredPage}
-			on:keydown={(event) => event.key === 'Enter' && addSearchParam('page', desiredPage)}
-		/>
 
-		<Button disabled={disableNext} on:click={() => addSearchParam('page', data.page + 1)}
-			>Next</Button
-		>
-	</div>
-</div>
+<style>
+	aside {
+		transition: right 0.3s ease-in-out; 
+	}
+</style>
+
+

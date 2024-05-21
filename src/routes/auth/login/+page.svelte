@@ -1,7 +1,6 @@
   <script lang="ts">
     import * as Form from "$lib/components/ui/form";
     import { Input } from "$lib/components/ui/input";
-    import Spinner from "$lib/components/ui/spinner/spinner.svelte";
 	  import Button from "$lib/components/ui/button/button.svelte";
     import * as Card from "$lib/components/ui/card/index.js";
 
@@ -11,7 +10,7 @@
     } from "sveltekit-superforms";
     import { zodClient } from "sveltekit-superforms/adapters";
     import { toast } from 'svelte-french-toast';
-	import Link from "$lib/components/ui/link/Link.svelte";
+	  import Link from "$lib/components/ui/link/Link.svelte";
 
 
     export let data;
@@ -22,6 +21,9 @@
     async function signInWithGoogle() {
       await supabase.auth.signInWithOAuth({
         provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/redirect`
+        }
       });
     }
 
@@ -30,6 +32,7 @@
       onUpdated({ form: f }) {
         if (f.valid) {
           toast.success('Login successful!');
+          window.location.href = '/';
         } else {
           if (f.errors._errors) {
             f.errors._errors.forEach((message) => {
@@ -87,7 +90,7 @@
   </Card.Content>
   <Card.Footer class="grid gap-2">
     <Form.Button isSubmitting={$submitting}>Log In</Form.Button>
-    <Link href="/auth/reset-password" className="text-center text-sm">Forgot Password?</Link>
+    <Link href="/auth/reset-password" class="text-center text-sm">Forgot Password?</Link>
   </Card.Footer>
 </form>
 </Card.Root>

@@ -1,31 +1,19 @@
 import type { PageServerLoad } from './$types';
-import { error, redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ url, locals }) => {
+export const load: PageServerLoad = async ({ url, locals: { supabase }, parent }) => {
 	const link = url.searchParams.get('link');
 	if (!link) {
-		error(400, 'Invite link invalid');
+		error(400, 'Invite link is invalid');
 	}
 
-	const { supabase, safeGetSession } = locals;
-
-	const { user } = await safeGetSession();
+	const { user } = await parent();
 
 	if (!user) {
 		error(401, 'Must be logged in');
 	}
 
-	const { data: userData, error: userError } = await supabase
-		.from('users')
-		.select('*')
-		.eq('id', user.id)
-		.single();
-
-	if (userError || !userData) {
-		error(401, 'User not found');
-	}
-
-	if (userData.group_id) {
+	if (user.group_id) {
 		error(409, 'User already in a group');
 	}
 
@@ -41,19 +29,19 @@ export const load: PageServerLoad = async ({ url, locals }) => {
 		.insert([{ group_id, user_id: user.id, role: 'viewer' }]);
 
 	if (groupError) {
-		error(500, groupError);
+		error(500, 'There was an error adding the user to the group');
 	}
 
 	const { error: groupIdError } = await supabase
 		.from('users')
 		.update({ group_id })
-		.eq('id', userData.id);
+		.eq('id', user.id);
 
 	if (groupIdError) {
-		error(500, groupIdError);
+		error(500, 'There was an error adding the user to the group');
 	}
 
 	return {
-		name: userData.name
+		name: user.name
 	};
 };

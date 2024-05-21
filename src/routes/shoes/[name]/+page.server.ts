@@ -1,20 +1,13 @@
 import { error, fail, type Actions } from '@sveltejs/kit';
-import { noteSchema } from './(components)/NoteForm.svelte';
+import { noteSchema } from '$lib/components/shoes/shoe/NoteForm.svelte';
 import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
-import { groupSchema } from '../../group/schema';
+import type { INote } from '$lib/types';
 
-export async function load({ locals, params }) {
-	const form = await superValidate(zod(groupSchema));
-	const { supabase, safeGetSession } = locals;
-	const { user } = await safeGetSession();
-	let notes = [];
+export async function load({ parent, locals: { supabase }, params }) {
+	const form = await superValidate(zod(noteSchema));
 
-	const { data: shoe, error: queryError } = await supabase
-		.from('shoes')
-		.select('*')
-		.eq('name', params.name)
-		.single();
+	const { data: shoe } = await supabase.from('shoes').select('*').eq('name', params.name).single();
 
 	if (!shoe) {
 		error(404, {
@@ -26,41 +19,18 @@ export async function load({ locals, params }) {
 		});
 	}
 
-	if (queryError) {
-		error(500, {
-			link: {
-				href: '/shoes',
-				label: 'Go back to shoes'
-			}
-		});
+	const { user } = await parent();
+
+	if (!user) {
+		return { shoe, form, notes: [] };
 	}
 
-	if (user) {
-		const { data: userData, error: userError } = await supabase
-			.from('users')
-			.select('*')
-			.eq('id', user.id)
-			.single();
-
-		const { data: notesData, error: notesError } = await supabase
-			.from('notes')
-			.select(
-				`
-			  *,
-			  users (
-				name
-			  )
-			`
-			)
-			.eq('shoe_name', params.name)
-			.or(
-				`user_id.eq.${userData.id}${!userData.group_id ? '' : `,group_id.eq.${userData.group_id}`}`
-			)
-			.order('created_at', { ascending: false });
-		if (!notesError && !userError) {
-			notes = notesData;
-		}
-	}
+	const { data: notes }: { data: INote[] | null } = await supabase
+		.from('notes')
+		.select('*,users (name)')
+		.eq('shoe_name', params.name)
+		.or(`user_id.eq.${user.id}${!user.group_id ? '' : `,group_id.eq.${user.group_id}`}`)
+		.order('created_at', { ascending: false });
 
 	return { shoe, form, notes };
 }
@@ -82,7 +52,11 @@ export const actions: Actions = {
 			return message(form, 'Must be logged in', { status: 401 });
 		}
 
-		const { data: userData } = await supabase.from('users').select('*').eq('id', user.id).single();
+		const { data: userData } = await supabase
+			.from('users')
+			.select('group_id')
+			.eq('id', user.id)
+			.single();
 
 		if (!userData) {
 			return message(form, 'Must be logged in', { status: 401 });
@@ -120,41 +94,42 @@ export const actions: Actions = {
 	edit: async (event) => {
 		const formData = await event.request.formData();
 		const form = await superValidate(formData, zod(noteSchema));
+
 		const { supabase, safeGetSession } = event.locals;
-		const { user } = await safeGetSession();
+
 		const noteId = formData.get('note_id');
 
-		if (!form.valid) {
-			return {
-				status: 400, // Or any suitable status code for unauthorized
-				error: 'Invalid form'
-			};
+		if (!form.valid && form.errors.content) {
+			return fail(400, {
+				message: form.errors.content[0] || 'Invalid note'
+			});
 		}
 
+		const { user } = await safeGetSession();
+
 		if (!user) {
-			return {
-				status: 401, // Or any suitable status code for unauthorized
-				error: 'Must be logged in'
-			};
+			return fail(401, {
+				message: 'Must be logged in'
+			});
 		}
 
 		if (!noteId) {
-			return {
-				status: 500,
-				error: 'Update failed, try again later'
-			};
+			return fail(500, {
+				message: 'Update failed, try again later'
+			});
 		}
+
 		// Update the note
-		const { error } = await supabase
+		const { data } = await supabase
 			.from('notes')
 			.update({ content: form.data.content, created_at: new Date() })
-			.eq('id', noteId);
+			.eq('id', noteId)
+			.select();
 
-		if (error) {
-			return {
-				status: 401, // Or an appropriate code for server error
-				error: 'You do not have permission to edit this note.'
-			};
+		if (!data || data.length === 0) {
+			return fail(401, {
+				message: 'You do not have permission to edit this note.'
+			});
 		}
 
 		return {
@@ -164,36 +139,28 @@ export const actions: Actions = {
 	},
 	delete: async (event) => {
 		const formData = await event.request.formData();
-
 		const { supabase, safeGetSession } = event.locals;
 		const { user } = await safeGetSession();
-		const note_id = formData.get('note_id');
+		const noteId = formData.get('note_id');
 
 		if (!user) {
-			return {
-				status: 401,
-				error: 'Must be logged in'
-			};
-		}
-		// Validate note_id
-		if (!note_id) {
-			return {
-				status: 500,
-				error: 'Something went wrong, try again later'
-			};
+			return fail(401, {
+				message: 'Must be logged in'
+			});
 		}
 
-		// Assuming you have a way to delete notes from Supabase
-		const { error } = await supabase
-			.from('notes')
-			.delete()
-			.match({ id: note_id, user_id: user.id }); // Ensure user owns the note
+		if (!noteId) {
+			return fail(500, {
+				message: 'Update failed, try again later'
+			});
+		}
 
-		if (error) {
-			return {
-				status: 401, // Or an appropriate code for server error
-				error: 'You do not have permission to edit this note.'
-			};
+		const { data } = await supabase.from('notes').delete().eq('id', noteId).select();
+
+		if (!data || data.length === 0) {
+			return fail(401, {
+				message: 'You do not have permission to edit this note.'
+			});
 		}
 
 		return { success: true, action: 'deleted' };
