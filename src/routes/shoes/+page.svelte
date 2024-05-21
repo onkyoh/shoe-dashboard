@@ -7,10 +7,10 @@
 	import { Input } from "$lib/components/ui/input";
 
 	import ShoeCard from "$lib/components/shoes/ShoeCard.svelte";
-	import Sort from "$lib/components/sort/Sort.svelte";
-	import Search from "$lib/components/search/Search.svelte";
-	import MobileSort from "$lib/components/sort/MobileSort.svelte";
-	import Filter from "$lib/components/filter/Filter.svelte";
+	import Sort from "$lib/components/shoes/sort/Sort.svelte";
+	import Search from "$lib/components/shoes/search/Search.svelte";
+	import MobileSort from "$lib/components/shoes/sort/MobileSort.svelte";
+	import Filter from "$lib/components/shoes/filter/Filter.svelte";
 
 	import type { PageData } from "./$types";
 

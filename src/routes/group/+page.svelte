@@ -22,8 +22,9 @@
 
 	let sortedBulletins: IBulletin[] = data.bulletins
 	$: {
-		sortedBulletins = data.bulletins
+		sortedBulletins = [...data.bulletins]
 	}
+
 	function modifyBulletin(bulletins: IBulletin[]) {
 		sortedBulletins = bulletins
 	}
@@ -47,7 +48,7 @@
 				<Notes notes={data.notes} />
 			</div>
 			
-			<BulletinSort bulletins={data.bulletins} modifyBulletins={modifyBulletin} />
+
 
 			<!-- Desktop -->
 			<div class="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 pb-4">
@@ -65,6 +66,9 @@
 			</div>
 			
 			<!-- Mobile -->
+
+			<BulletinSort bulletins={data.bulletins} modifyBulletins={modifyBulletin} />
+
 			<div class="block md:hidden">
 				<Dialog.Root bind:open={createDialogOpen}>
 					<Dialog.Trigger class="md:hidden text-white rounded-md w-12 h-12 bg-primary flex justify-center items-center fixed right-4 bottom-4 z-10">
@@ -84,7 +88,8 @@
 					<Carousel.Content class="ml-0 gap-2">
 						{#each sortedBulletins as bulletin (bulletin.id)}
 							<Carousel.Item class="basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:1/5"
-								><Bulletin bulletin={bulletin} /></Carousel.Item
+								><Bulletin bulletin={bulletin} />
+							</Carousel.Item
 							>
 						{/each}
 					</Carousel.Content>

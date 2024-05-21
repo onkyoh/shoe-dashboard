@@ -28,12 +28,20 @@
     }
 
     function determineExpiryDate(): number {
-    const diff = new Date(bulletin.delete_at).getTime() - new Date(bulletin?.created_at || 0).getTime();
-        if (diff > EXPIRY_MAP['Day']) return EXPIRY_MAP['Day'];
-        else if (diff > EXPIRY_MAP['Week']) return EXPIRY_MAP['Week'];
-        else if (diff > EXPIRY_MAP['Month']) return EXPIRY_MAP['Month'];
-        else return EXPIRY_MAP['Never'];
+        const deleteAt = new Date(bulletin.delete_at).getTime();
+        const createdAt = new Date(bulletin?.created_at || 0).getTime();
+        const diff = deleteAt - createdAt;
+        if (diff < EXPIRY_MAP['Day']) {
+            return EXPIRY_MAP['Day'];
+        } else if (diff < EXPIRY_MAP['Week']) {
+            return EXPIRY_MAP['Week'];
+        } else if (diff < EXPIRY_MAP['Month']) {
+            return EXPIRY_MAP['Month'];
+        } else {
+            return EXPIRY_MAP['Never'];
+        }
     }
+
 
 
     let editDialogOpen = false;

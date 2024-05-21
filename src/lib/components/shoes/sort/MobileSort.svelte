@@ -7,8 +7,8 @@
 
     import { addSearchParam, getSortParam } from '$lib/utils';
 
-    import { formatSortValue, removeSearchParam } from '../../utils';  
-    import { SORT_OPTIONS } from '../../constants';  
+    import { formatSortValue, removeSearchParam } from '$lib/utils';  
+    import { SORT_OPTIONS } from '$lib/constants';  
 
 
   let selectedSort: string = formatSortValue(getSortParam($page.url));
