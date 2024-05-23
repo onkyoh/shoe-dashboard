@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { cubicOut } from 'svelte/easing';
-import { goto } from '$app/navigation';
 import type { TransitionConfig } from 'svelte/transition';
 
 export function cn(...inputs: ClassValue[]) {
@@ -56,7 +55,7 @@ export const flyAndScale = (
 	};
 };
 
-export function getFilterParams(url: URL, param: string) {
+export function getArrayParams(url: URL, param: string) {
 	const values = url.searchParams.getAll(param);
 	return values.length > 0 ? values.map((value) => value.split(',')) : null;
 }
@@ -73,41 +72,59 @@ export function getRangeParams(
 	minRangeParamName: string,
 	maxRangeParamName: string
 ): number[] | null {
-	const minRangeRaw = url.searchParams.get(minRangeParamName);
-	const maxRangeRaw = url.searchParams.get(maxRangeParamName);
+	const minRange = parseFloat(url.searchParams.get(minRangeParamName) || '0');
+	const maxRange = parseFloat(url.searchParams.get(maxRangeParamName) || '15');
 
-	const minRange = minRangeRaw ? parseFloat(minRangeRaw) : 0;
-	const maxRange = maxRangeRaw ? parseFloat(maxRangeRaw) : 15;
-
-	// Enforce minRange <= maxRange
-	return [Math.min(minRange, maxRange), maxRange];
+	return [
+		Math.min(isNaN(minRange) ? 0 : minRange, isNaN(maxRange) ? 15 : maxRange),
+		Math.max(isNaN(minRange) ? 0 : minRange, isNaN(maxRange) ? 15 : maxRange)
+	];
 }
 
-export function getSortParam(url: URL, defaultSort = ['created_at', 'desc']) {
-	const sort = url.searchParams.get('sort');
+const sortFields: Record<string, string> = {
+	date: 'created_at',
+	weight: 'weight',
+	drop: 'drop'
+};
 
+export function getSortParam(url: URL) {
+	const sort = url.searchParams.get('sort');
+	const defaultSort = ['created_at', 'desc'];
 	if (!sort) {
-		return defaultSort; // Return default as an array
+		return defaultSort;
 	}
 
 	const [sortFieldRaw, sortOrder] = sort.split('|');
-	const sortField = sortFieldRaw === 'date' ? 'created_at' : sortFieldRaw;
+	const sortField = sortFields[sortFieldRaw];
+
+	if (!sortField || (sortOrder !== 'asc' && sortOrder !== 'desc')) {
+		return defaultSort;
+	}
 
 	return [sortField, sortOrder];
 }
 
-export function addSearchParam(field: string, value: string | number) {
+export function addSearchParam(field: string, value: string | number | null | undefined): string {
 	const currentParams = new URLSearchParams(window.location.search);
-	currentParams.set(field, value.toString());
-	goto(`${window.location.pathname}?${currentParams}`);
+	if (value != null) {
+		currentParams.set(field, value.toString());
+	}
+	return `${window.location.pathname}?${currentParams}`;
+}
+
+export function removeSearchParam(paramName: string) {
+	const url = new URL(window.location.href);
+	url.searchParams.delete(paramName);
+	window.history.replaceState({}, '', url.toString());
 }
 
 export function formatCreatedAt(createdAt: string | null) {
 	if (!createdAt) return null;
-	return new Date(createdAt).toLocaleDateString('en-US');
+	return new Date(createdAt).toLocaleDateString('en-CA');
 }
 
 export function formatName(name: string): string {
+	if (typeof name !== 'string') return '';
 	const parts = name.split(' ');
 	if (parts.length > 1) {
 		const lastName = parts.pop();
@@ -120,10 +137,4 @@ export function formatName(name: string): string {
 export function formatSortValue([sortFieldRaw, sortOrder]: string[]): string {
 	const sortField = sortFieldRaw === 'created_at' ? 'date' : sortFieldRaw;
 	return `${sortField}|${sortOrder}`; // Format: "field|order" (e.g., "date|asc")
-}
-
-export function removeSearchParam(paramName: string) {
-	const url = new URL(window.location.href);
-	url.searchParams.delete(paramName);
-	window.history.replaceState({}, '', url.toString());
 }
