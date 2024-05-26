@@ -3,12 +3,10 @@
 	import Article from '$lib/components/resources/Article.svelte';
 
 	export let data: PageData;
-
-	let tempResources = Array(5).fill(data.resources[0]);
 </script>
 
 <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-	{#each tempResources as article}
+	{#each data.resources as article}
 		<Article {article} />
 	{/each}
 </div>
