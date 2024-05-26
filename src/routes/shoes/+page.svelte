@@ -9,8 +9,7 @@
 
 	import ShoeCard from '$lib/components/shoes/ShoeCard.svelte';
 	import Sort from '$lib/components/shoes/sort/Sort.svelte';
-	import Search from '$lib/components/shoes/search/Search.svelte';
-	import MobileSort from '$lib/components/shoes/sort/MobileSort.svelte';
+	import Icon from '$lib/components/ui/icon';
 	import Filter from '$lib/components/shoes/filter/Filter.svelte';
 
 	import type { PageData } from './$types';
@@ -34,12 +33,9 @@
 </script>
 
 <section class="flex flex-col gap-2">
-	<div class="md:hidden">
-		<Button class="w-full" on:click={toggleMobileFilter}>Filter & Sort</Button>
-	</div>
-	<div class="hidden justify-between md:flex">
-		<Search class="w-[400px]" />
+	<div class="flex gap-2 md:hidden">
 		<Sort />
+		<Button on:click={toggleMobileFilter}><Icon icon="mage:filter" /></Button>
 	</div>
 	<div class="flex gap-2">
 		<div class="h-full overflow-y-auto md:w-[calc(100%-300px)]">
@@ -52,7 +48,7 @@
 				>
 					{#each data.shoes as shoe (shoe.id)}
 						<a href={`/shoes/${shoe.name}`}>
-							<ShoeCard {shoe} class="border-2 hover:border-primary" />
+							<ShoeCard {shoe} class="border hover:border-primary" />
 						</a>
 					{/each}
 				</div>
@@ -89,7 +85,6 @@
 				'md:relative md:right-0 md:block'
 			)}
 		>
-			<MobileSort />
 			<Filter />
 		</aside>
 

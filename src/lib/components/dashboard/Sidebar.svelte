@@ -3,23 +3,8 @@
 	import { page } from '$app/stores';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import Icon from '$lib/components/ui/icon';
-	import { BRANDS } from '$lib/constants';
 
 	let { user, group } = $page.data;
-
-
-	const SHOE_CHILDREN = [
-		{
-			title: 'All',
-			isChild: true,
-			path: '/shoes'
-		},
-		...BRANDS.map((brand) => ({
-			title: brand,
-			isChild: true,
-			path: `/shoes?brands=${brand}`
-		}))
-	];
 
 	const routes = [
 		{
@@ -40,8 +25,7 @@
 		{
 			title: 'Shoes',
 			path: '/shoes',
-			icon: 'mingcute:shoe-fill',
-			children: SHOE_CHILDREN
+			icon: 'mingcute:shoe-fill'
 		},
 		{
 			title: 'Profile',
@@ -49,21 +33,13 @@
 			icon: 'iconamoon:profile-fill',
 			path: '/profile'
 		},
+		{
+			title: 'Contact',
+			isSecondary: true,
+			icon: 'ic:baseline-email',
+			path: '/contact'
+		}
 	];
-
-	let isExpanded: string[] = [];
-
-	const toggleChildren = (title: string) => {
-		isExpanded = isExpanded.includes(title)
-			? isExpanded.filter((existing) => existing !== title)
-			: [...isExpanded, title];
-	};
-
-	// Closes expanded when path changes
-	$: {
-		const params = $page.url.searchParams;
-		isExpanded = [];
-	}
 
 	const variantByPath = (path: string, currentPath: string | null, exclude?: string) => {
 		if (currentPath?.includes(path) && (!exclude || !currentPath?.includes(exclude))) {
@@ -104,41 +80,14 @@
 
 		<ul class="flex h-full flex-col gap-1 overflow-y-auto">
 			{#each routes.filter((route) => !route.isSecondary) as route}
-				{#if route.children}
-					<Button
-						on:click={() => toggleChildren(route.title)}
-						variant={variantByPath(route.path, $page.route.id) ? 'default' : 'ghost'}
-						class="w-full justify-start px-4 py-2 text-sm"
-					>
-						<Icon icon={route.icon} />
-						<span class="ml-2 inline">{route.title}</span>
-						{#if isExpanded.includes(route.title)}
-							<Icon icon="heroicons-solid:minus" class="ms-auto" />
-						{:else}
-							<Icon icon="heroicons-solid:plus" class="ms-auto" />
-						{/if}
-					</Button>
-					{#if isExpanded.includes(route.title)}
-						{#each route.children as child}
-							<Button
-								href={child.path}
-								variant="ghost"
-								class="w-full justify-start px-4 py-2 text-sm"
-							>
-								<span class="ml-8 inline">{child.title}</span>
-							</Button>
-						{/each}
-					{/if}
-				{:else}
-					<Button
-						href={route.path}
-						variant={variantByPath(route.path, $page.route.id) ? 'default' : 'ghost'}
-						class="text-md w-full justify-start px-4"
-					>
-						<Icon icon={route.icon} />
-						<span class="ml-2 inline">{route.title}</span>
-					</Button>
-				{/if}
+				<Button
+					href={route.path}
+					variant={variantByPath(route.path, $page.route.id) ? 'default' : 'ghost'}
+					class="text-md w-full justify-start px-4"
+				>
+					<Icon icon={route.icon} />
+					<span class="ml-2 inline">{route.title}</span>
+				</Button>
 			{/each}
 			<Separator class="mb-2 mt-auto" />
 			{#each routes.filter((route) => route.isSecondary) as route}

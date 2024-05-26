@@ -1,5 +1,5 @@
 <script lang="ts">
-	  import { enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import toast from 'svelte-french-toast';
 	import { formatCreatedAt } from '$lib/utils';
 
@@ -9,7 +9,6 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import FormButton from '$lib/components/ui/form/form-button.svelte';
-
 
 	import type { INote } from '$lib/types';
 	import type { SubmitFunction } from '@sveltejs/kit';
@@ -40,9 +39,9 @@
 
 <NoteContainer>
 	<div class="flex items-center justify-end">
-		<div class="flex items-center gap-2 mr-[-1rem]">
+		<div class="mr-[-1rem] flex items-center gap-2">
 			<!-- Edit Dialog -->
-			<Dialog.Root bind:open={editDialogOpen}>
+			<Dialog.Root closeOnOutsideClick={false} bind:open={editDialogOpen}>
 				<Button class="size-10" variant="ghost" on:click={() => (editDialogOpen = true)}
 					><Icon icon="lucide:edit" class="text-lg" /></Button
 				>
@@ -60,13 +59,16 @@
 							>{currentNote.content.length} / 1000</span
 						>
 						<input type="hidden" name="note_id" value={note.id} />
-						<FormButton isSubmitting={isLoading} disabled={isLoading || currentNote.content.length === 0}>Update</FormButton>
+						<FormButton
+							isSubmitting={isLoading}
+							disabled={isLoading || currentNote.content.length === 0}>Update</FormButton
+						>
 					</form>
 				</Dialog.Content>
 			</Dialog.Root>
 
 			<!-- Delete Dialog -->
-			<Dialog.Root bind:open={deleteDialogOpen}>
+			<Dialog.Root closeOnOutsideClick={false} bind:open={deleteDialogOpen}>
 				<Button variant="ghost" class="size-10" on:click={() => (deleteDialogOpen = true)}
 					><Icon icon="lucide:trash" class="text-lg" /></Button
 				>
@@ -79,7 +81,9 @@
 						</Dialog.Description>
 					</Dialog.Header>
 					<form action="?/delete" method="POST" use:enhance={noteAction}>
-						<FormButton variant="destructive" isSubmitting={isLoading} disabled={isLoading}>Delete</FormButton>
+						<FormButton variant="destructive" isSubmitting={isLoading} disabled={isLoading}
+							>Delete</FormButton
+						>
 						<input type="hidden" name="note_id" value={note.id} />
 					</form>
 				</Dialog.Content>
@@ -87,14 +91,14 @@
 		</div>
 	</div>
 
-    <div class="flex justify-between">
+	<div class="flex justify-between">
 		<span class="text-sm text-muted-foreground">
 			{note.users.name}
-        </span>
+		</span>
 
-        <span class="text-sm text-muted-foreground">
-            {formatCreatedAt(note.created_at)}
-        </span>
-    </div>
+		<span class="text-sm text-muted-foreground">
+			{formatCreatedAt(note.created_at)}
+		</span>
+	</div>
 	<p class="text-muted-foreground">{note.content}</p>
 </NoteContainer>

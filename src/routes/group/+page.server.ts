@@ -64,7 +64,7 @@ export const load: PageServerLoad = async ({ parent, locals: { supabase } }) => 
 			message: 'Must be logged in',
 			link: {
 				href: '/auth/login',
-				label: 'Sign in or create an account to start or join a group.'
+				label: 'Login to create or join a group'
 			}
 		});
 	}

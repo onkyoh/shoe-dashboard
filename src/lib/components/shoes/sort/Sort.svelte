@@ -20,7 +20,7 @@
 		}
 	}}
 >
-	<Select.Trigger class="w-[300px]">
+	<Select.Trigger class="w-full">
 		<Select.Value placeholder="Sort" />
 	</Select.Trigger>
 	<Select.Content>
