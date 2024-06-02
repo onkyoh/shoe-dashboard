@@ -15,87 +15,100 @@
 	import type { IBulletin } from '$lib/types';
 	import type { PageData } from './$types';
 
-
 	export let data: PageData;
-	
-	let createDialogOpen = false
 
-	let sortedBulletins: IBulletin[] = data.bulletins
+	let createDialogOpen = false;
+
+	let sortedBulletins: IBulletin[] = data.bulletins;
 	$: {
-		sortedBulletins = [...data.bulletins]
+		sortedBulletins = [...data.bulletins];
 	}
 
 	function modifyBulletin(bulletins: IBulletin[]) {
-		sortedBulletins = bulletins
+		sortedBulletins = bulletins;
 	}
-
 </script>
 
-	{#if !data.user}
+{#if !data.user}
 	<Card.Root>
 		<Card.Header>
 			<p>Sign in or create an account to start or join a group.</p>
 		</Card.Header>
 	</Card.Root>
-{:else}
-	{#if !data.group}
+{:else if !data.group}
+	<div class="flex h-full w-full items-center justify-center">
 		<Create dataForm={data.groupForm} />
-	{:else}
-		<div class="flex flex-col gap-2">
-			<div class="flex gap-2 max-h-[600px] overflow-hidden">
-				<Share shareLink={data.shareLink} group={data.group} user={data.user} groupMembers={data.groupMembers}/>
-				
-				<Notes notes={data.notes} />
-			</div>
-			
+	</div>
+{:else}
+	<div class="flex flex-col gap-2">
+		<div class="flex max-h-[600px] gap-2 overflow-hidden">
+			<Share
+				shareLink={data.shareLink}
+				group={data.group}
+				user={data.user}
+				groupMembers={data.groupMembers}
+			/>
 
-
-			<!-- Desktop -->
-			<div class="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 pb-4">
-				<div class="hidden md:block">
-					<BulletinContainer >
-						<BulletinForm dataForm={data.bulletinForm} closeDialog={() => (createDialogOpen = false)}/>
-					</BulletinContainer>
-				</div>
-
-				{#if data.bulletins && data.bulletins.length > 0}
-					{#each sortedBulletins as bulletin (bulletin.id)}
-						<Bulletin bulletin={bulletin}  />
-					{/each}
-				{/if}
-			</div>
-			
-			<!-- Mobile -->
-
-			<BulletinSort bulletins={data.bulletins} modifyBulletins={modifyBulletin} />
-
-			<div class="block md:hidden">
-				<Dialog.Root bind:open={createDialogOpen}>
-					<Dialog.Trigger class="md:hidden text-white rounded-md w-12 h-12 bg-primary flex justify-center items-center fixed right-4 bottom-4 z-10">
-						<Icon icon="typcn:plus" class="text-2xl" />
-					</Dialog.Trigger>
-					<Dialog.Content>
-						<Dialog.Header>
-							<Dialog.Title>Create a Bulletin</Dialog.Title>
-							<Dialog.Description>Create a new bulletin to share key information with your group.</Dialog.Description>
-						</Dialog.Header>
-					
-						<BulletinForm dataForm={data.bulletinForm} closeDialog={() => (createDialogOpen = false)}/>
-					</Dialog.Content>
-				</Dialog.Root>
-
-				<Carousel.Root class="w-full">
-					<Carousel.Content class="ml-0 gap-2">
-						{#each sortedBulletins as bulletin (bulletin.id)}
-							<Carousel.Item class="basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:1/5"
-								><Bulletin bulletin={bulletin} />
-							</Carousel.Item
-							>
-						{/each}
-					</Carousel.Content>
-				</Carousel.Root>
-			</div>
-		
+			<Notes notes={data.notes} />
 		</div>
-	{/if}
+
+		<!-- Desktop -->
+		<div
+			class="hidden grid-cols-1 gap-2 pb-4 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+		>
+			<div class="hidden md:block">
+				<BulletinContainer>
+					<BulletinForm
+						dataForm={data.bulletinForm}
+						closeDialog={() => (createDialogOpen = false)}
+					/>
+				</BulletinContainer>
+			</div>
+
+			{#if data.bulletins && data.bulletins.length > 0}
+				{#each sortedBulletins as bulletin (bulletin.id)}
+					<Bulletin {bulletin} />
+				{/each}
+			{/if}
+		</div>
+
+		<!-- Mobile -->
+
+		<BulletinSort bulletins={data.bulletins} modifyBulletins={modifyBulletin} />
+
+		<div class="block md:hidden">
+			<Dialog.Root closeOnOutsideClick={false} bind:open={createDialogOpen}>
+				<Dialog.Trigger
+					class="fixed bottom-4 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-md bg-primary text-white md:hidden"
+					aria-label="create bulletin"
+				>
+					<Icon icon="typcn:plus" class="text-2xl" />
+				</Dialog.Trigger>
+				<Dialog.Content>
+					<Dialog.Header>
+						<Dialog.Title>Create a Bulletin</Dialog.Title>
+						<Dialog.Description
+							>Create a new bulletin to share key information with your group.</Dialog.Description
+						>
+					</Dialog.Header>
+
+					<BulletinForm
+						dataForm={data.bulletinForm}
+						closeDialog={() => (createDialogOpen = false)}
+					/>
+				</Dialog.Content>
+			</Dialog.Root>
+
+			<Carousel.Root class="w-full">
+				<Carousel.Content class="ml-0 gap-2">
+					{#each sortedBulletins as bulletin (bulletin.id)}
+						<Carousel.Item
+							class="2xl:1/5 basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+							><Bulletin {bulletin} />
+						</Carousel.Item>
+					{/each}
+				</Carousel.Content>
+			</Carousel.Root>
+		</div>
+	</div>
 {/if}

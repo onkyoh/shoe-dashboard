@@ -1,5 +1,5 @@
 import type { Tables } from '$lib/schema';
-import { getRangeParams, getFilterParams, getSortParam, getPageParam } from '$lib/utils';
+import { getRangeParams, getArrayParams, getSortParam, getPageParam } from '$lib/utils';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
@@ -14,8 +14,8 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
 	} else {
 		const weightRange = getRangeParams(url, 'minWeight', 'maxWeight');
 		const dropRange = getRangeParams(url, 'minDrop', 'maxDrop');
-		const brandSearch = getFilterParams(url, 'brands');
-		const categorySearch = getFilterParams(url, 'categories');
+		const brandSearch = getArrayParams(url, 'brands');
+		const categorySearch = getArrayParams(url, 'categories');
 
 		if (weightRange) query.gte('weight', weightRange[0]).lte('weight', weightRange[1]);
 		if (dropRange) query.gte('drop', dropRange[0]).lte('drop', dropRange[1]);

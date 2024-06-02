@@ -7,6 +7,7 @@
 	import ShoeCard from '$lib/components/shoes/ShoeCard.svelte';
 	import Acitivty from '$lib/components/dashboard/Acitivty.svelte';
 	import Article from '$lib/components/resources/Article.svelte';
+	import Link from '$lib/components/ui/link/link.svelte';
 
 	export let data: PageData;
 
@@ -24,15 +25,18 @@
 	</Card.Root>
 
 	{#if shoes.length > 0}
-	<Carousel.Root class="w-full" opts={{ skipSnaps: true }}>
-		<Carousel.Content class="ml-0 gap-2 ">
-			{#each shoes as shoe}
-				<Carousel.Item class="basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:1/5"
-					><a href={`/shoes/${shoe.name}`}><ShoeCard {shoe} class="border-2 hover:border-primary hover:border-2"/></a></Carousel.Item
-				>
-			{/each}
-		</Carousel.Content>
-	</Carousel.Root>
+		<Carousel.Root class="w-full" opts={{ skipSnaps: true }}>
+			<Carousel.Content class="ml-0 gap-2 ">
+				{#each shoes as shoe}
+					<Carousel.Item
+						class="2xl:1/5 basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+						><a href={`/shoes/${shoe.name}`}
+							><ShoeCard {shoe} class="border hover:border hover:border-primary" /></a
+						></Carousel.Item
+					>
+				{/each}
+			</Carousel.Content>
+		</Carousel.Root>
 	{:else}
 		<p>No shoes found</p>
 	{/if}
@@ -48,40 +52,42 @@
 		<Carousel.Root class="w-full" opts={{ skipSnaps: true }}>
 			<Carousel.Content class="ml-0 gap-2">
 				{#each activity as activity}
-					<Carousel.Item class="basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:1/5"
+					<Carousel.Item
+						class="2xl:1/5 basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
 						><Acitivty {activity} /></Carousel.Item
 					>
 				{/each}
 			</Carousel.Content>
 		</Carousel.Root>
 	{:else}
-	<Card.Root>
-		<Card.Header>
-			{#if user}
-			<p>No activity found</p>
-			{:else}
-			<p>Sign in to start creating and sharing your insights about running shoes.</p>
-			{/if}
-		</Card.Header>
-	</Card.Root>
+		<Card.Root>
+			<Card.Header class="text-muted-foreground">
+				{#if user}
+					<p>No activity found</p>
+				{:else}
+					<p>
+						<Link href="/auth/login">Sign in</Link> to start sharing your insights about running shoes.
+					</p>
+				{/if}
+			</Card.Header>
+		</Card.Root>
 	{/if}
 
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Freshen up on your Knowledge</Card.Title>
 			<Card.Description
-				>Here are some of the latest articles, guides and tutorials on all things running
-				shoes.
-			</Card.Description
-			>
+				>Here are some of the latest articles, guides and tutorials on all things running shoes.
+			</Card.Description>
 		</Card.Header>
 	</Card.Root>
 	{#if resources.length > 0}
 		<Carousel.Root class="w-full border-l border-r" opts={{ skipSnaps: true }}>
 			<Carousel.Content class="ml-0 gap-2">
 				{#each resources as article}
-					<Carousel.Item class="basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4 2xl:1/5"
-						><Article {article}/></Carousel.Item
+					<Carousel.Item
+						class="2xl:1/5 basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+						><Article {article} /></Carousel.Item
 					>
 				{/each}
 			</Carousel.Content>
