@@ -36,7 +36,9 @@
 		</Card.Header>
 	</Card.Root>
 {:else if !data.group}
-	<Create dataForm={data.groupForm} />
+	<div class="flex h-full w-full items-center justify-center">
+		<Create dataForm={data.groupForm} />
+	</div>
 {:else}
 	<div class="flex flex-col gap-2">
 		<div class="flex max-h-[600px] gap-2 overflow-hidden">
@@ -78,6 +80,7 @@
 			<Dialog.Root closeOnOutsideClick={false} bind:open={createDialogOpen}>
 				<Dialog.Trigger
 					class="fixed bottom-4 right-4 z-10 flex h-12 w-12 items-center justify-center rounded-md bg-primary text-white md:hidden"
+					aria-label="create bulletin"
 				>
 					<Icon icon="typcn:plus" class="text-2xl" />
 				</Dialog.Trigger>

@@ -43,7 +43,7 @@
 		<!-- Span to center search on md: -->
 		<span class="invisible hidden text-2xl font-semibold italic md:block">Shoez.run</span>
 
-		<Button on:click={toggleOpenNav} variant="ghost" class="md:hidden"
+		<Button on:click={toggleOpenNav} variant="ghost" class="md:hidden" aria-label="open sidebar"
 			><Icon icon="material-symbols:menu" class="text-primary" /></Button
 		>
 		<Search class="hidden md:block md:w-[400px]" />

@@ -68,11 +68,8 @@
 				</div>
 			{:else}
 				<div class="flex gap-2">
-					<Button class="flex-grow" href="/auth/login">Login</Button><Button
-						variant="ghost"
-						class="flex-grow"
-						href="/auth/register">Sign Up</Button
-					>
+					<Button class="flex-grow" href="/auth/login">Login</Button>
+					<Button class="flex-grow" href="/auth/register" variant="ghost">Sign Up</Button>
 				</div>
 			{/if}
 			<Separator class="my-2" />

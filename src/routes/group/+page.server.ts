@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ parent, locals: { supabase } }) => 
 	try {
 		const { user } = await parent();
 
-		if (!user || !user.group_id) {
+		if (!user) {
 			throw new Error('No user or group return defaults');
 		}
 
@@ -93,7 +93,7 @@ export const actions: Actions = {
 
 		const { error } = await supabase.rpc('create_group_and_link_user', {
 			user_id: user.id,
-			group_name: groupForm.data.name
+			group_name: groupForm.data.groupName
 		});
 
 		if (error) {

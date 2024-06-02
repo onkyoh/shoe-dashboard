@@ -83,8 +83,13 @@
 		<Card.Header>
 			<Card.Title>Invite members to {group?.name}</Card.Title>
 			<div class="flex space-x-2 pt-2">
-				<Input value={shareLink} readonly class="text-muted-foreground" />
-				<Button on:click={copyLink}
+				<Input
+					value={shareLink}
+					readonly
+					class="text-muted-foreground"
+					aria-label="share link input"
+				/>
+				<Button on:click={copyLink} aria-label="copy link"
 					><Icon icon="fluent:clipboard-24-filled" class="text-2xl" /></Button
 				>
 			</div>
@@ -109,8 +114,9 @@
 					<FormButton
 						disabled={editedArray.length === 0 || isLoading}
 						isSubmitting={isLoading}
-						class="ml-auto w-fit"><Icon icon="ic:round-save" class="text-2xl" /></FormButton
-					>
+						class="ml-auto w-fit"
+						><Icon icon="ic:round-save" class="text-2xl" />
+					</FormButton>
 				</form>
 			{/if}
 			<LeaveDialog />

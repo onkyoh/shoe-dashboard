@@ -16,7 +16,7 @@
 	</Button>
 
 	<Dialog.Root closeOnOutsideClick={false} bind:open={searchDialogOpen}>
-		<Dialog.Content class="overflow-visible">
+		<Dialog.Content class="top-16 overflow-visible">
 			<Search class="mt-2" />
 		</Dialog.Content>
 	</Dialog.Root>

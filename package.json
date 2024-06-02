@@ -49,6 +49,7 @@
     "@supabase/supabase-js": "^2.39.8",
     "bits-ui": "^0.19.7",
     "clsx": "^2.1.0",
+    "dotenv": "^16.4.5",
     "embla-carousel-svelte": "^8.0.0",
     "formsnap": "^0.5.1",
     "iconify-icon": "^2.0.0",

@@ -29,8 +29,10 @@
 </script>
 
 <Dialog.Root closeOnOutsideClick={false} bind:open={deleteDialogOpen}>
-	<Button variant="destructive" on:click={() => (deleteDialogOpen = true)}
-		><Icon icon="mingcute:exit-fill" class="text-2xl" /></Button
+	<Button
+		variant="destructive"
+		on:click={() => (deleteDialogOpen = true)}
+		aria-label="open leave dialog"><Icon icon="mingcute:exit-fill" class="text-2xl" /></Button
 	>
 	<Dialog.Content>
 		<Dialog.Header>
