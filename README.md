@@ -1,38 +1,30 @@
-# create-svelte
+# shoez.run
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Now hosted at [https://shoez.run](https://shoez.run) this project is a full-stack Sveltekit app that provides a resource for learning about running shoes.
 
-## Creating a project
+The main features are as follows:
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **Search:** Search and query for a modern running shoe based on its name, brands, specifications, or even what run type it is good for. It's dead simple to find and compare shoes.
+- **Groups:** This website highlights the importance of sharing information. Create or join a group to gain and share personal thoughts regarding everything running shoes.
+- **Notes:** Leave notes on a shoe page to remember or share your thoughts on the shoe with your group.
+- **Resources:** An ever-growing curated resources page that provides all the essential sources and information to freshen up your running shoe knowledge.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Technology
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+For those of you interested the following will highlight some key technologies used in this website's development:
 
-## Developing
+- **Sveltekit:** A full-stack Javascript framework specifically chosen for its lightweight feel, ease of use, and powerful routing and server functions.
+- **Supabase:** Dead simple BaaS that enabled quick and easy development. Key features being utilized are the relational Postgres DB, email and Google auth, Row Level Policies to handle authorization, and triggers that enable automatic DB updates.
+- **AWS:** Although not included here this website relies on a few AWS features. The first is a Lambda function which scrapes the [RunningShoesGuru](https://www.runningshoesguru.com/) website to add to the website's shoe database. This Lambda function scrapes via Python's [Beautiful Soup](https://pypi.org/project/beautifulsoup4/) library. The scraping is triggered by an AWS cron job and occurs once a day with alerts set up during failures. Additionally, AWS Simple Email Service is being utilized to handle Supabase functions which require emails such as email auth and password resets.
+- **Tailwind CSS:** Tailwind is being utilized for styling along with the [shadcn-svelte](https://www.shadcn-svelte.com/) component library.
+- **Netlify:** For simple and free SSR hosting Netlify is being used with Sveltekits netlify-adaptor.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Potential added features
 
-```bash
-npm run dev
+- [ ] - Search enabled for notes and resource content.
+- [ ] - Always adding more resources
+- [ ] - Preferences within the profile page
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Contributions
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Any contributions are welcomed simply create a pull request with your changes.
