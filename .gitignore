@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /build
+/.netlify
 /.svelte-kit
 /package
 .env
@@ -8,14 +9,4 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
 
-# Sentry Config File
-.sentryclirc
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
