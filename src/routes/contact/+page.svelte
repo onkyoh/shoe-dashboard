@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SvelteSeo from "svelte-seo";
+
 	import * as Card from '$lib/components/ui/card';
 	import * as Select from '$lib/components/ui/select';
 
@@ -8,14 +10,18 @@
 	import { Button } from '$lib/components/ui/button';
 </script>
 
+<SvelteSeo
+  title="Contact | shoez.run"
+  description="Whether you have a question, found an issue, or would like to share some feedback, feel free to send a message!"
+/>
+
 <div class="flex h-full w-full items-center justify-center">
 	<Card.Root class="w-full max-w-[600px]">
 		<form name="contact" method="POST" data-netlify="true">
 			<Card.Header class="space-y-1">
 				<Card.Title class="text-2xl">Contact</Card.Title>
 				<Card.CardDescription
-					>Whether you have a question, found an issue, or would like to share some feedback. Send a
-					message and get in touch!
+					>Whether you have a question, found an issue, or would like to share some feedback, feel free to send a message!
 				</Card.CardDescription>
 			</Card.Header>
 			<Card.Content class="grid gap-4">

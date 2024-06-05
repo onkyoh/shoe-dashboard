@@ -1,7 +1,8 @@
 <script lang="ts">
+	import SvelteSeo from "svelte-seo";
+
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import Spinner from '$lib/components/ui/spinner/spinner.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 
@@ -9,7 +10,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { toast } from 'svelte-french-toast';
-	import Link from '$lib/components/ui/link/link.svelte';
+	import Link from '$lib/components/ui/link';
 
 	export let data;
 	let { supabase } = data;
@@ -19,7 +20,7 @@
 		await supabase.auth.signInWithOAuth({
 			provider: 'google',
 			options: {
-				redirectTo: `${window.location.origin}/redirect`
+				redirectTo: `${import.meta.env.VITE_BASE_URL}/redirect`
 			}
 		});
 	}
@@ -46,6 +47,12 @@
 	// Define the type of fields as an array of strings
 	const fields: Array<keyof typeof $formData> = ['name', 'email', 'password'];
 </script>
+
+<SvelteSeo
+	title="Register | shoez.run"
+	description="Create your shoez.run account today!"
+/>
+
 
 <Card.Root class="w-full max-w-[600px]">
 	<form method="POST" use:enhance>

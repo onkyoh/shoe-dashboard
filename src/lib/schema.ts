@@ -168,13 +168,15 @@ export type Database = {
 					description: string;
 					id: string;
 					title: string;
+					link: string;
 				};
 				Insert: {
-					content: string;
+					content?: string;
 					created_at?: string;
 					description: string;
 					id?: string;
 					title: string;
+					link?: string;
 				};
 				Update: {
 					content?: string;
@@ -182,6 +184,7 @@ export type Database = {
 					description?: string;
 					id?: string;
 					title?: string;
+					link?: string;
 				};
 				Relationships: [];
 			};

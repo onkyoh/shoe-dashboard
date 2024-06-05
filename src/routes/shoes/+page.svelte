@@ -1,4 +1,6 @@
 <script lang="ts">
+	 import SvelteSeo from "svelte-seo";
+
 	import { addSearchParam, cn } from '$lib/utils';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/stores';
@@ -7,9 +9,9 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 
+	import Icon from '$lib/components/ui/icon';
 	import ShoeCard from '$lib/components/shoes/ShoeCard.svelte';
 	import Sort from '$lib/components/shoes/sort/Sort.svelte';
-	import Icon from '$lib/components/ui/icon';
 	import Filter from '$lib/components/shoes/filter/Filter.svelte';
 
 	import type { PageData } from './$types';
@@ -32,16 +34,22 @@
 	$: $page.url.pathname, (mobileFilterOpen = false);
 </script>
 
+<SvelteSeo
+  title="Shoes | shoez.run"
+  description="A complete collection of modern running shoes, curated for you and your group. Filter shoes based on brands, specs, or even what runs they are good for."
+/>
+
 <section class="flex flex-col gap-2">
 	<div class="flex gap-2 md:hidden">
 		<Sort />
 		<Button on:click={toggleMobileFilter}><Icon icon="mage:filter" /></Button>
 	</div>
+
 	<div class="flex gap-2">
-		<div class="h-full overflow-y-auto md:w-[calc(100%-300px)]">
+		<div class="h-full w-full flex flex-col items-center overflow-y-auto md:w-[calc(100%-300px)]">
 			<!-- Shoe Grid -->
 			{#if data.shoes.length === 0}
-				<p class="mx-auto w-fit rounded-md border bg-white p-4 py-2 shadow-sm">No shoes found</p>
+				<p class="w-fit rounded-md border bg-white p-4 py-2">No shoes found</p>
 			{:else}
 				<div
 					class="grid max-w-full grid-cols-2 gap-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
@@ -57,7 +65,7 @@
 			<!-- Pagination -->
 
 			<div class="mt-2 flex items-center justify-center gap-2">
-				<span>{floor} to {ciel} of {data.count || 0}</span>
+				<span>{floor}-{ciel} of {data.count || 0}</span>
 				<Button disabled={disablePrev} on:click={() => goto(addSearchParam('page', data.page - 1))}
 					>Prev</Button
 				>
@@ -72,8 +80,8 @@
 				/>
 
 				<Button disabled={disableNext} on:click={() => goto(addSearchParam('page', data.page + 1))}
-					>Next</Button
-				>
+					>Next
+				</Button>
 			</div>
 		</div>
 

@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals: { supabase }, parent }) => 
 
 	const { data: resources }: { data: IResource[] | null } = await supabase
 		.from('resources')
-		.select('title, description, created_at, id')
+		.select('title, link, description, created_at, id')
 		.order('created_at', { ascending: false });
 
 	try {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	 import SvelteSeo from "svelte-seo";
 	import type { PageData } from './$types';
 
 	import * as Carousel from '$lib/components/ui/carousel';
@@ -7,12 +8,17 @@
 	import ShoeCard from '$lib/components/shoes/ShoeCard.svelte';
 	import Acitivty from '$lib/components/dashboard/Acitivty.svelte';
 	import Article from '$lib/components/resources/Article.svelte';
-	import Link from '$lib/components/ui/link/link.svelte';
+	import Link from '$lib/components/ui/link';
 
 	export let data: PageData;
 
 	const { shoes, activity, resources, user } = data;
 </script>
+
+<SvelteSeo
+  title="Dashboard | shoez.run"
+  description="shoez.run provides a convenient location for everything running shoes. Start a group, share your thoughts, and learn all about running shoes."
+/>
 
 <section class="flex max-h-screen flex-col gap-2">
 	<Card.Root>
@@ -77,13 +83,13 @@
 		<Card.Header>
 			<Card.Title>Freshen up on your Knowledge</Card.Title>
 			<Card.Description
-				>Here are some of the latest articles, guides and tutorials on all things running shoes.
+				>Here are some of the latest reviews, articles and videos on all things running shoes.
 			</Card.Description>
 		</Card.Header>
 	</Card.Root>
 	{#if resources.length > 0}
-		<Carousel.Root class="w-full border-l border-r" opts={{ skipSnaps: true }}>
-			<Carousel.Content class="ml-0 gap-2">
+		<Carousel.Root class="w-full" opts={{ skipSnaps: true }}>
+			<Carousel.Content class="ml-0 gap-2 ">
 				{#each resources as article}
 					<Carousel.Item
 						class="2xl:1/5 basis-3/4 p-0 sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"

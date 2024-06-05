@@ -1,10 +1,12 @@
 <script lang="ts">
+    import SvelteSeo from "svelte-seo";
+
     import { Button } from "$lib/components/ui/form";
     import * as Card from "$lib/components/ui/card";
     import { Input } from "$lib/components/ui/input";
     import { Label } from "$lib/components/ui/label"
     import { toast } from 'svelte-french-toast'
-	import Separator from "$lib/components/ui/separator/separator.svelte";
+	  import Separator from "$lib/components/ui/separator/separator.svelte";
   
     export let data
     let { supabase } = data
@@ -16,10 +18,10 @@
   
     const handleResetPassword = async () => {
       sending = true;
-  
+      
       try {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/auth/new-password` // Modify as needed
+          redirectTo: `${import.meta.env.VITE_BASE_URL}/auth/new-password`
         });
   
         if (error) {
@@ -30,12 +32,17 @@
         success = true;
       } catch (err) {
         console.error(err);
-        toast.error('Failed to send password reset email'); // Or handle errors differently
+        toast.error('Failed to send password reset email'); 
       } finally {
         sending = false;
       }
     };
   </script>
+
+  <SvelteSeo
+    title="Reset Password | shoez.run"
+    description="Enter your email to get a reset password link for your shoez.run account"
+  />
   
   <Card.Root class="max-w-[600px] w-full h-fit">
     {#if success}

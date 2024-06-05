@@ -19,7 +19,7 @@
     <span class="text-sm text-muted-foreground">{`${state[0]} to ${state[1]}`}{unit}</span>
 </div>
 
-<Slider value={[state[0], state[1]]} step={0.5} max={max} onValueChange={onChange} />
+<Slider value={[state[0], state[1]]} step={0.5} max={max} onValueChange={onChange} class="w-[calc(100%-2rem)] mx-auto" />
 
 {#if state[0] !== min}
     <Input type="hidden" name={minParam} bind:value={state[0]} />

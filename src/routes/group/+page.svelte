@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SvelteSeo from "svelte-seo";
+
 	import Share from '$lib/components/group/Share.svelte';
 	import Create from '$lib/components/group/Create.svelte';
 	import Bulletin from '$lib/components/group/Bulletin.svelte';
@@ -28,6 +30,11 @@
 		sortedBulletins = bulletins;
 	}
 </script>
+
+<SvelteSeo
+  title="Group | shoez.run"
+  description="Create or join a group to organize all of your running shoes insights!"
+/>
 
 {#if !data.user}
 	<Card.Root>

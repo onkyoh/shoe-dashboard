@@ -1,4 +1,6 @@
 <script>
+  import SvelteSeo from "svelte-seo";
+
   import {Button} from '$lib/components/ui/form'
   import * as Card from "$lib/components/ui/card";
 	import { Input } from "$lib/components/ui/input";
@@ -42,6 +44,11 @@
       }
     }
   </script>
+
+  <SvelteSeo
+    title="Resend Verification Email | shoez.run"
+    description="Resend verification email to your account on shoez.run"
+  />
   
   <Card.Root class="max-w-[600px] w-full h-fit">
     {#if success}

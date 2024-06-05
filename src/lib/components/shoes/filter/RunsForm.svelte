@@ -33,6 +33,10 @@
 		pronation = storedState.pronation || null;
 		run = storedState.run || null;
 		strike = storedState.strike || 6;
+	} else {
+		pronation = null;
+		run = null;
+		strike = 6;
 	}
 
 	$: state = JSON.stringify({

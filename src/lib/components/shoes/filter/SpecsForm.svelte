@@ -16,6 +16,11 @@
 		categories = storedState.categories || [];
 		weightRange = storedState.weightRange || [0, 14];
 		heelDropRange = storedState.heelDropRange || [0, 12];
+	} else {
+		brands = [];
+		categories = [];
+		weightRange = [0, 14];
+		heelDropRange = [0, 12];
 	}
 
 	$: state = JSON.stringify({
