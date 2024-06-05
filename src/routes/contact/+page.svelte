@@ -1,3 +1,4 @@
+
 <script lang="ts">
 	import SvelteSeo from "svelte-seo";
 
@@ -18,6 +19,7 @@
 <div class="flex h-full w-full items-center justify-center">
 	<Card.Root class="w-full max-w-[600px]">
 		<form name="contact" method="POST" data-netlify="true">
+			<input type="hidden" name="form-name" value="contact" />
 			<Card.Header class="space-y-1">
 				<Card.Title class="text-2xl">Contact</Card.Title>
 				<Card.CardDescription
