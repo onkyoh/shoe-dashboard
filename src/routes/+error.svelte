@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as Card from '$lib/components/ui/card';
-	import Link from '$lib/components/ui/link/link.svelte';
+	import Link from '$lib/components/ui/link';
 	import { Separator } from '$lib/components/ui/separator';
 </script>
 

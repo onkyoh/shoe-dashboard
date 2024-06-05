@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from './$types.js';
 import { fail, redirect } from '@sveltejs/kit';
-import { superValidate, message, setError } from 'sveltekit-superforms';
+import { superValidate, setError } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { registerSchema } from './schema';
 
@@ -27,7 +27,7 @@ export const actions: Actions = {
 			email: form.data.email,
 			password: form.data.password,
 			options: {
-				emailRedirectTo: 'http://localhost:5173/redirect',
+				emailRedirectTo: `${import.meta.env.VITE_BASE_URL}/redirect`,
 				data: {
 					name: form.data.name
 				}

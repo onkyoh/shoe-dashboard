@@ -39,16 +39,15 @@
 <Toaster />
 
 <header class="fixed z-10 w-full rounded-md border bg-white p-2 md:relative">
-	<div class="mx-auto flex w-full items-center justify-between">
-		<!-- Span to center search on md: -->
-		<span class="invisible hidden text-2xl font-semibold italic md:block">Shoez.run</span>
-
-		<Button on:click={toggleOpenNav} variant="ghost" class="md:hidden" aria-label="open sidebar"
-			><Icon icon="material-symbols:menu" class="text-primary" /></Button
-		>
+	<div class="mx-auto flex w-full items-center justify-between md:px-4">
+		<Button on:click={toggleOpenNav} variant="ghost" class="md:hidden" aria-label="open sidebar">
+			<Icon icon="material-symbols:menu" class="text-primary" />
+		</Button>
+		<a href="/" class="text-2xl font-semibold italic text-primary" style="font-family: Arial">shoez.run</a>
 		<Search class="hidden md:block md:w-[400px]" />
-		<a href="/" class="text-2xl font-semibold italic text-primary">Shoez.run</a>
 		<SearchDialog />
+		<!-- Span to center search on md: -->
+		<span class="invisible hidden text-2xl font-semibold italic md:block">shoez.run</span>
 	</div>
 </header>
 

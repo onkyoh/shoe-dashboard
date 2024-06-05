@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SvelteSeo from "svelte-seo";
+
 	import ShoeCard from '$lib/components/shoes/ShoeCard.svelte';
 	import Icon from '$lib/components/ui/icon';
 	import RSGIcon from '$lib/images/RSG.svelte';
@@ -19,6 +21,22 @@
 
 	let createDialogOpen = false;
 </script>
+
+<SvelteSeo
+  title="{shoe.name} | shoez.run"
+  description="Learn about and share notes for the {shoe.image}."
+  openGraph={{
+	  images: [
+		{
+        url: shoe.image,
+      },
+	  ]
+  }}
+  twitter={{
+    card: "summary_large_image",
+	image: shoe.image,
+  }}
+/>
 
 {#if shoe}
 	<section class="flex flex-col gap-2">

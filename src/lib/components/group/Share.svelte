@@ -12,7 +12,6 @@
 
 	import Icon from '$lib/components/ui/icon';
 	import FormButton from '$lib/components/ui/form/form-button.svelte';
-	import LeaveDialog from './LeaveDialog.svelte';
 
 	import { beforeNavigate } from '$app/navigation';
 	import { enhance } from '$app/forms';
@@ -119,7 +118,6 @@
 					</FormButton>
 				</form>
 			{/if}
-			<LeaveDialog />
 		</div>
 
 		<div class="space-y-4">

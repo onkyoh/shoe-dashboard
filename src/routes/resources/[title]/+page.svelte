@@ -1,7 +1,14 @@
 <script lang="ts">
+	import SvelteSeo from "svelte-seo";
+
 	import type { LayoutData } from './$types';
 	export let data: LayoutData;
 </script>
+
+<SvelteSeo
+  title="{data.article.title} | shoez.run"
+  description="{data.article.description}"
+/>
 
 <article
 	class="mx-auto h-fit max-w-[800px] rounded-md border bg-white p-6 shadow-sm md:w-[calc(100%-4rem)]"

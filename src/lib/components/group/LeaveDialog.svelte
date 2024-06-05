@@ -31,8 +31,9 @@
 <Dialog.Root closeOnOutsideClick={false} bind:open={deleteDialogOpen}>
 	<Button
 		variant="destructive"
+		size="sm"
 		on:click={() => (deleteDialogOpen = true)}
-		aria-label="open leave dialog"><Icon icon="mingcute:exit-fill" class="text-2xl" /></Button
+		aria-label="open leave dialog"><Icon icon="material-symbols:group-remove-rounded" class="text-lg" /></Button
 	>
 	<Dialog.Content>
 		<Dialog.Header>
@@ -43,7 +44,7 @@
 				role.
 			</Dialog.Description>
 		</Dialog.Header>
-		<form action="?/leaveGroup" method="POST" use:enhance={leaveGroupAction}>
+		<form action="/group/leaveGroup" method="POST" use:enhance={leaveGroupAction}>
 			<FormButton variant="destructive" isSubmitting={isLoading} disabled={isLoading}
 				>Leave</FormButton
 			>

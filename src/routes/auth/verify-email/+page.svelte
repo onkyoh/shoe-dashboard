@@ -1,7 +1,14 @@
 <script lang="ts">
+	import SvelteSeo from "svelte-seo";
+
 	import * as Card from '$lib/components/ui/card';
-	import Link from '$lib/components/ui/link/link.svelte';
+	import Link from '$lib/components/ui/link';
 </script>
+
+<SvelteSeo
+  title="Verify Email | shoez.run"
+  description="Verify your email for your shoez.run account"
+/>
 
 <Card.Root class="w-full max-w-[600px]">
 	<Card.Header class="space-y-1">
