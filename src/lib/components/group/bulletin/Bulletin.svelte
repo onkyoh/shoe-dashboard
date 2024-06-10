@@ -8,6 +8,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import FormButton from '$lib/components/ui/form/form-button.svelte';
 	import Icon from '$lib/components/ui/icon';
+	import { Label } from '$lib/components/ui/label';
 
 	import BulletinContainer from './BulletinContainer.svelte';
 	import PriorityField from './PriorityField.svelte';
@@ -18,6 +19,7 @@
 
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-french-toast';
+
 	export let bulletin: IBulletin;
 
 	let currentBulletin = {
@@ -62,10 +64,10 @@
 				>
 				<Dialog.Content>
 					<Dialog.Header>
-						<Dialog.Title>Edit Note</Dialog.Title>
+						<Dialog.Title>Edit Bulletin</Dialog.Title>
 						<Dialog.Description>
-							You may edit your note, remember these changes are permanent and visible to all of
-							your group members.
+							You may edit your bulletin, remember these changes are visible to all of your group
+							members.
 						</Dialog.Description>
 					</Dialog.Header>
 
@@ -77,20 +79,29 @@
 					>
 						<input type="hidden" name="expiryDate" value={currentBulletin.expiryDate} />
 						<input type="hidden" name="priority" value={currentBulletin.priority} />
-						<PriorityField
-							value={currentBulletin.priority}
-							onUpdate={(priority) => (currentBulletin.priority = priority)}
-						/>
-						<ExpiryField
-							value={currentBulletin.expiryDate}
-							onUpdate={(expiryDate) => (currentBulletin.expiryDate = expiryDate)}
-						/>
-						<Textarea
-							name="content"
-							class="resize-none p-4"
-							bind:value={currentBulletin.content}
-							rows={5}
-						/>
+						<div class="flex flex-col gap-2">
+							<Label>Priority:</Label>
+							<PriorityField
+								value={currentBulletin.priority}
+								onUpdate={(priority) => (currentBulletin.priority = priority)}
+							/>
+						</div>
+						<div class="flex flex-col gap-2">
+							<Label>Expiry Date:</Label>
+							<ExpiryField
+								value={currentBulletin.expiryDate}
+								onUpdate={(expiryDate) => (currentBulletin.expiryDate = expiryDate)}
+							/>
+						</div>
+						<div class="flex flex-col gap-2">
+							<Label>Content:</Label>
+							<Textarea
+								name="content"
+								class="resize-none p-4"
+								bind:value={currentBulletin.content}
+								rows={5}
+							/>
+						</div>
 						<span class="ml-auto text-sm text-muted-foreground"
 							>{currentBulletin.content.length} / 1000</span
 						>
