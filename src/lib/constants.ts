@@ -226,10 +226,3 @@ export const SPEC_DESCRIPTIONS = {
 			'This shoe is relatively heavy and likely has added elements to enhance comfort, with a durable midsole that emphasizes protecting your legs and keeping them fresh.'
 	}
 };
-
-export const EXPIRY_MAP: Record<string, number> = {
-	Day: 1000 * 60 * 60 * 24,
-	Week: 1000 * 60 * 60 * 24 * 7,
-	Month: 1000 * 60 * 60 * 24 * 30,
-	Never: 1000 * 60 * 60 * 24 * 30 * 12 * 5
-};

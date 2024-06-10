@@ -36,11 +36,7 @@
 			formData.set('shoe_id', shoe.id);
 			formData.set('shoe_name', shoe.name);
 		},
-		taintedMessage: () => {
-			return new Promise((resolve) => {
-				alert('You have unsaved changes. Are you sure you want to leave?');
-			});
-		}
+		taintedMessage: 'You have unsaved changes. Are you sure you want to leave?'
 	});
 
 	const { form: formData, enhance, submitting } = form;
@@ -52,7 +48,7 @@
 			<Textarea
 				{...attrs}
 				placeholder="Your notes about this shoe..."
-				class="flex-grow resize-none p-4 min-h-64"
+				class="min-h-64 flex-grow resize-none p-4"
 				bind:value={$formData.content}
 			/>
 			<span class="ml-auto text-sm text-muted-foreground"

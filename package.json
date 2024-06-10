@@ -45,6 +45,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@internationalized/date": "^3.5.4",
     "@supabase/gotrue-js": "^2.46.1",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.8",
