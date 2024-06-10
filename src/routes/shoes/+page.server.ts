@@ -10,7 +10,8 @@ export const load: PageServerLoad = async ({ locals: { supabase }, url }) => {
 
 	const query = supabase.from('shoes').select('*', { count: 'exact' });
 	if (nameSearch) {
-		query.ilike('name', `%${nameSearch}%`);
+		const searchTerms = nameSearch.split('&').map((term) => `%${term.trim()}%`);
+		query.ilikeAnyOf('name', searchTerms);
 	} else {
 		const weightRange = getRangeParams(url, 'minWeight', 'maxWeight');
 		const dropRange = getRangeParams(url, 'minDrop', 'maxDrop');

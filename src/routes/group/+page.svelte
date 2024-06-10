@@ -1,13 +1,13 @@
 <script lang="ts">
-	import SvelteSeo from "svelte-seo";
+	import SvelteSeo from 'svelte-seo';
 
 	import Share from '$lib/components/group/Share.svelte';
 	import Create from '$lib/components/group/Create.svelte';
-	import Bulletin from '$lib/components/group/Bulletin.svelte';
-	import BulletinForm from '$lib/components/group/BulletinForm.svelte';
 	import Notes from '$lib/components/group/Notes.svelte';
-	import BulletinSort from '$lib/components/group/BulletinSort.svelte';
-	import BulletinContainer from '$lib/components/group/BulletinContainer.svelte';
+	import Bulletin from '$lib/components/group/bulletin/Bulletin.svelte';
+	import BulletinForm from '$lib/components/group/bulletin/BulletinForm.svelte';
+	import BulletinSort from '$lib/components/group/bulletin/BulletinSort.svelte';
+	import BulletinContainer from '$lib/components/group/bulletin/BulletinContainer.svelte';
 
 	import * as Carousel from '$lib/components/ui/carousel';
 	import * as Card from '$lib/components/ui/card';
@@ -32,8 +32,8 @@
 </script>
 
 <SvelteSeo
-  title="Group | shoez.run"
-  description="Create or join a group to organize all of your running shoes insights!"
+	title="Group | shoez.run"
+	description="Create or join a group to organize all of your running shoes insights!"
 />
 
 {#if !data.user}
@@ -61,9 +61,9 @@
 
 		<!-- Desktop -->
 		<div
-			class="hidden grid-cols-1 gap-2 pb-4 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+			class="hidden grid-cols-1 gap-2 pb-4 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
 		>
-			<div class="hidden md:block">
+			<div>
 				<BulletinContainer>
 					<BulletinForm
 						dataForm={data.bulletinForm}

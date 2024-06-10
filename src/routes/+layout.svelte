@@ -43,7 +43,9 @@
 		<Button on:click={toggleOpenNav} variant="ghost" class="md:hidden" aria-label="open sidebar">
 			<Icon icon="material-symbols:menu" class="text-primary" />
 		</Button>
-		<a href="/" class="text-2xl font-semibold italic text-primary" style="font-family: Arial">shoez.run</a>
+		<a href="/" class="text-2xl font-semibold italic text-primary" style="font-family: Arial"
+			>shoez.run</a
+		>
 		<Search class="hidden md:block md:w-[400px]" />
 		<SearchDialog />
 		<!-- Span to center search on md: -->
@@ -51,12 +53,12 @@
 	</div>
 </header>
 
-<div class="flex h-full w-full bg-slate-100 md:h-[calc(100vh-4rem)] md:flex-row">
+<div class="flex h-full w-full bg-slate-100 md:h-[calc(100vh-3.6rem)] md:flex-row">
 	<aside
 		class={cn(
 			openNav ? 'left-0' : 'left-[-300%]',
 			'fixed top-0 z-10 h-full w-[300px]',
-			'md:relative md:left-0 md:w-[400px] md:p-2 md:pb-0 md:pr-0'
+			'md:relative md:left-0 md:w-[400px] md:p-2 md:pr-0'
 		)}
 	>
 		<Sidebar />
@@ -72,7 +74,7 @@
 		></button>
 	{/if}
 
-	<main class="mt-14 h-full min-h-[calc(100vh-4rem)] w-full overflow-y-auto p-2 md:mt-0">
+	<main class="min-h-[calc(100%] mt-14 h-full w-full overflow-y-auto p-2 md:mt-0">
 		<slot />
 	</main>
 </div>

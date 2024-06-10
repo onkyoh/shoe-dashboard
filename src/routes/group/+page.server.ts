@@ -2,12 +2,13 @@ import type { Actions, PageServerLoad } from './$types';
 import { error, fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { groupSchema } from '$lib/components/group/Create.svelte';
-import { bulletinSchema } from '$lib/components/group/BulletinForm.svelte';
+import { bulletinSchema } from '$lib/components/group/bulletin/BulletinForm.svelte';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { Tables } from '$lib/schema';
 import type { IBulletin, IGroupMember, INote } from '$lib/types';
+import { request } from 'http';
 
-export const load: PageServerLoad = async ({ parent, locals: { supabase } }) => {
+export const load: PageServerLoad = async ({ fetch, parent, locals: { supabase } }) => {
 	const groupForm = await superValidate(zod(groupSchema));
 	const bulletinForm = await superValidate(zod(bulletinSchema));
 	try {
@@ -47,7 +48,7 @@ export const load: PageServerLoad = async ({ parent, locals: { supabase } }) => 
 		const shareLink = groupMembers?.find(
 			(member) => member.user_id === user.id && ['admin', 'owner'].includes(member.role)
 		)
-			? generateShareLink(user.group_id)
+			? encodeShareLink(user.group_id)
 			: '';
 
 		return {
@@ -70,7 +71,7 @@ export const load: PageServerLoad = async ({ parent, locals: { supabase } }) => 
 	}
 };
 
-function generateShareLink(groupId: string) {
+function encodeShareLink(groupId: string) {
 	const combinedString = `${groupId}|${Date.now() / 1000 + 60 * 60 * 24 * 7}`;
 	return `${import.meta.env.VITE_BASE_URL}/group/join?link=${Buffer.from(combinedString).toString('base64url')}`;
 }
@@ -126,15 +127,14 @@ export const actions: Actions = {
 			return message(form, 'Must be logged in', { status: 401 });
 		}
 
-		// Insert bulletin data
 		const { error: bulletinError } = await supabase
 			.from('bulletins')
 			.insert([
 				{
 					content: form.data.content,
 					group_id: userData.group_id,
-					priority: form.data.priority, // Assuming priority is in the form
-					delete_at: new Date(form.data.expiryDate)
+					priority: form.data.priority,
+					delete_at: new Date(form.data.expiryDate).toISOString()
 				}
 			])
 			.select()
@@ -180,9 +180,9 @@ export const actions: Actions = {
 			.from('bulletins')
 			.update({
 				content: form.data.content,
-				priority: form.data.priority, // Update priority
-				delete_at: new Date(form.data.expiryDate), // Update delete_at based on expiryDate
-				created_at: new Date()
+				priority: form.data.priority,
+				delete_at: new Date(form.data.expiryDate).toISOString(),
+				created_at: new Date().toISOString()
 			})
 			.eq('id', bulletinId)
 			.select();

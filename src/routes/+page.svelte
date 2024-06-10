@@ -1,5 +1,5 @@
 <script lang="ts">
-	 import SvelteSeo from "svelte-seo";
+	import SvelteSeo from 'svelte-seo';
 	import type { PageData } from './$types';
 
 	import * as Carousel from '$lib/components/ui/carousel';
@@ -16,11 +16,11 @@
 </script>
 
 <SvelteSeo
-  title="Dashboard | shoez.run"
-  description="shoez.run provides a convenient location for everything running shoes. Start a group, share your thoughts, and learn all about running shoes."
+	title="Dashboard | shoez.run"
+	description="shoez.run provides a convenient location for everything running shoes. Start a group, share your thoughts, and learn all about running shoes."
 />
 
-<section class="flex max-h-screen flex-col gap-2">
+<section class="flex flex-col gap-2">
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>New Shoes</Card.Title>

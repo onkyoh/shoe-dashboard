@@ -49,8 +49,8 @@
 					<Dialog.Header>
 						<Dialog.Title>Edit Note</Dialog.Title>
 						<Dialog.Description>
-							You may edit your note, remember these changes are permanent and visible to all of
-							your group members.
+							You may edit your note, remember these changes are visible to all of your group
+							members.
 						</Dialog.Description>
 					</Dialog.Header>
 					<form method="POST" action="?/edit" class="flex flex-col gap-4" use:enhance={noteAction}>

@@ -1,13 +1,18 @@
 <script lang="ts">
 	import { cn, formatCreatedAt, formatName } from '$lib/utils';
 
+	import { PRIORITY_MAP } from '$lib/constants';
+
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Button } from '$lib/components/ui/button';
 	import FormButton from '$lib/components/ui/form/form-button.svelte';
 	import Icon from '$lib/components/ui/icon';
+	import { Label } from '$lib/components/ui/label';
 
 	import BulletinContainer from './BulletinContainer.svelte';
+	import PriorityField from './PriorityField.svelte';
+	import ExpiryField from './ExpiryField.svelte';
 
 	import type { IBulletin } from '$lib/types';
 	import type { SubmitFunction } from '@sveltejs/kit';
@@ -15,31 +20,13 @@
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-french-toast';
 
-	import { PRIORITY_MAP } from '$lib/constants';
-	import { EXPIRY_MAP } from '$lib/constants';
-
 	export let bulletin: IBulletin;
 
 	let currentBulletin = {
 		priority: bulletin.priority,
-		expiryDate: determineExpiryDate(),
+		expiryDate: bulletin.delete_at,
 		content: bulletin.content
 	};
-
-	function determineExpiryDate(): number {
-		const deleteAt = new Date(bulletin.delete_at).getTime();
-		const createdAt = new Date(bulletin?.created_at || 0).getTime();
-		const diff = deleteAt - createdAt;
-		if (diff < EXPIRY_MAP['Day']) {
-			return EXPIRY_MAP['Day'];
-		} else if (diff < EXPIRY_MAP['Week']) {
-			return EXPIRY_MAP['Week'];
-		} else if (diff < EXPIRY_MAP['Month']) {
-			return EXPIRY_MAP['Month'];
-		} else {
-			return EXPIRY_MAP['Never'];
-		}
-	}
 
 	let editDialogOpen = false;
 	let deleteDialogOpen = false;
@@ -77,10 +64,10 @@
 				>
 				<Dialog.Content>
 					<Dialog.Header>
-						<Dialog.Title>Edit Note</Dialog.Title>
+						<Dialog.Title>Edit Bulletin</Dialog.Title>
 						<Dialog.Description>
-							You may edit your note, remember these changes are permanent and visible to all of
-							your group members.
+							You may edit your bulletin, remember these changes are visible to all of your group
+							members.
 						</Dialog.Description>
 					</Dialog.Header>
 
@@ -92,28 +79,29 @@
 					>
 						<input type="hidden" name="expiryDate" value={currentBulletin.expiryDate} />
 						<input type="hidden" name="priority" value={currentBulletin.priority} />
-						<div class="flex flex-wrap gap-2">
-							{#each [1, 2, 3] as priorityLevel}
-								<Button
-									variant={currentBulletin.priority === priorityLevel ? 'outline' : 'default'}
-									class={`border-primary ${PRIORITY_MAP[priorityLevel]} flex-grow`}
-									on:click={() => (currentBulletin.priority = priorityLevel)}
-								></Button>
-							{/each}
+						<div class="flex flex-col gap-2">
+							<Label>Priority:</Label>
+							<PriorityField
+								value={currentBulletin.priority}
+								onUpdate={(priority) => (currentBulletin.priority = priority)}
+							/>
 						</div>
-						<div class="flex w-full flex-wrap gap-2">
-							{#each Object.keys(EXPIRY_MAP) as expiresIn}
-								<Button
-									variant={currentBulletin.expiryDate === EXPIRY_MAP[expiresIn]
-										? 'default'
-										: 'outline'}
-									on:click={() => (currentBulletin.expiryDate = EXPIRY_MAP[expiresIn])}
-								>
-									{expiresIn}
-								</Button>
-							{/each}
+						<div class="flex flex-col gap-2">
+							<Label>Expiry Date:</Label>
+							<ExpiryField
+								value={currentBulletin.expiryDate}
+								onUpdate={(expiryDate) => (currentBulletin.expiryDate = expiryDate)}
+							/>
 						</div>
-						<Textarea name="content" class="resize-none p-4" bind:value={currentBulletin.content} />
+						<div class="flex flex-col gap-2">
+							<Label>Content:</Label>
+							<Textarea
+								name="content"
+								class="resize-none p-4"
+								bind:value={currentBulletin.content}
+								rows={5}
+							/>
+						</div>
 						<span class="ml-auto text-sm text-muted-foreground"
 							>{currentBulletin.content.length} / 1000</span
 						>
