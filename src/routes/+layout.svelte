@@ -53,7 +53,7 @@
 	</div>
 </header>
 
-<div class="flex h-full w-full bg-slate-100 md:h-[calc(100vh-3.7rem)] md:flex-row">
+<div class="flex h-full w-full bg-slate-100 md:h-[calc(100vh-3.6rem)] md:flex-row">
 	<aside
 		class={cn(
 			openNav ? 'left-0' : 'left-[-300%]',
