@@ -63,14 +63,12 @@
 		<div
 			class="hidden grid-cols-1 gap-2 pb-4 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
 		>
-			<div>
-				<BulletinContainer>
-					<BulletinForm
-						dataForm={data.bulletinForm}
-						closeDialog={() => (createDialogOpen = false)}
-					/>
-				</BulletinContainer>
-			</div>
+			<BulletinContainer>
+				<BulletinForm
+					dataForm={data.bulletinForm}
+					closeDialog={() => (createDialogOpen = false)}
+				/>
+			</BulletinContainer>
 
 			{#if data.bulletins && data.bulletins.length > 0}
 				{#each sortedBulletins as bulletin (bulletin.id)}

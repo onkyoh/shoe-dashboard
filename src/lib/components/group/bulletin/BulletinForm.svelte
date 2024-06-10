@@ -75,7 +75,7 @@
 			<Form.Label>Content:</Form.Label>
 			<Textarea
 				{...attrs}
-				placeholder="Your message to your group..."
+				placeholder="Deals, important info, weekly or daily updates..."
 				class="flex-grow resize-none p-4"
 				bind:value={$formData.content}
 				rows={5}

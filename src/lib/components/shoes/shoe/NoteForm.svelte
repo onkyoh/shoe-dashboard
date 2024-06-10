@@ -47,7 +47,7 @@
 		<Form.Control let:attrs>
 			<Textarea
 				{...attrs}
-				placeholder="Your notes about this shoe..."
+				placeholder="Personal experience, comparisons, reviews you've heard..."
 				class="min-h-64 flex-grow resize-none p-4"
 				bind:value={$formData.content}
 			/>
