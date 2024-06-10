@@ -9,6 +9,8 @@
 
 	import { toast, Toaster } from 'svelte-french-toast';
 
+	import SvelteSeo from 'svelte-seo';
+
 	import { Button } from '$lib/components/ui/button';
 	import Icon from '$lib/components/ui/icon';
 
@@ -35,6 +37,25 @@
 	};
 	$: $page.url.pathname, (openNav = false);
 </script>
+
+<SvelteSeo
+  themeColor="#2563eb"
+  openGraph={{
+    title: "shoez.run | All things running shoes",
+    description: "shoez.run provides a convenient location for everything running shoes. Start a group, share your thoughts, and start learning!",
+    url: "https://shoez.run",
+    type: "website",
+    site_name: "shoez.run",
+	images: [{ url: "https://shoez.run/android-chrome-512x512.png" }],
+  }}
+  twitter={{
+    card: "summary_large_image",
+    title: "shoez.run | All things running shoes",
+    description:
+      "Your one-stop shop for all things running and running shoes.",
+    image: "https://shoez.run/android-chrome-512x512.png",
+  }}
+/>
 
 <Toaster />
 
