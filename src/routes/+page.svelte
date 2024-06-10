@@ -17,7 +17,7 @@
 
 <SvelteSeo
 	title="Dashboard | shoez.run"
-	description="shoez.run provides a convenient location for everything running shoes. Start a group, share your thoughts, and learn all about running shoes."
+	description="shoez.run provides a convenient location for everything running shoes. Start a group, share your thoughts, and start learning!"
 />
 
 <section class="flex flex-col gap-2">
