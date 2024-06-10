@@ -57,7 +57,7 @@
 	<aside
 		class={cn(
 			openNav ? 'left-0' : 'left-[-300%]',
-			'fixed top-0 z-10 h-full w-[300px]',
+			'fixed top-0 z-50 h-full w-[300px]',
 			'md:relative md:left-0 md:w-[400px] md:p-2 md:pr-0'
 		)}
 	>
@@ -74,7 +74,7 @@
 		></button>
 	{/if}
 
-	<main class="min-h-[calc(100%] mt-14 h-full w-full overflow-y-auto p-2 md:mt-0">
+	<main class="min-h-[calc(100vh-3.6rem)] mt-14 h-full w-full overflow-y-auto p-2 md:mt-0">
 		<slot />
 	</main>
 </div>
