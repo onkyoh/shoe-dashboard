@@ -6,8 +6,9 @@ import { bulletinSchema } from '$lib/components/group/bulletin/BulletinForm.svel
 import { zod } from 'sveltekit-superforms/adapters';
 import type { Tables } from '$lib/schema';
 import type { IBulletin, IGroupMember, INote } from '$lib/types';
+import { request } from 'http';
 
-export const load: PageServerLoad = async ({ parent, locals: { supabase } }) => {
+export const load: PageServerLoad = async ({ fetch, parent, locals: { supabase } }) => {
 	const groupForm = await superValidate(zod(groupSchema));
 	const bulletinForm = await superValidate(zod(bulletinSchema));
 	try {
@@ -47,7 +48,7 @@ export const load: PageServerLoad = async ({ parent, locals: { supabase } }) => 
 		const shareLink = groupMembers?.find(
 			(member) => member.user_id === user.id && ['admin', 'owner'].includes(member.role)
 		)
-			? generateShareLink(user.group_id)
+			? encodeShareLink(user.group_id)
 			: '';
 
 		return {
@@ -70,7 +71,7 @@ export const load: PageServerLoad = async ({ parent, locals: { supabase } }) => 
 	}
 };
 
-function generateShareLink(groupId: string) {
+function encodeShareLink(groupId: string) {
 	const combinedString = `${groupId}|${Date.now() / 1000 + 60 * 60 * 24 * 7}`;
 	return `${import.meta.env.VITE_BASE_URL}/group/join?link=${Buffer.from(combinedString).toString('base64url')}`;
 }
