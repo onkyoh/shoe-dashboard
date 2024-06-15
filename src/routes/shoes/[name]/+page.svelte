@@ -24,7 +24,7 @@
 
 <SvelteSeo
   title="{shoe.name} | shoez.run"
-  description="Learn about and share notes for the {shoe.image}."
+  description="Learn about the {shoe.name}."
   openGraph={{
 	  images: [
 		{
